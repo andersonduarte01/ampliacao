@@ -8,20 +8,19 @@
       <div class="container" data-aos="fade-up">
 
         <div class="row">
-
-          <div class="col-lg-12 entries">
-
-            <article class="entry">
-
-              <h2 class="entry-title text-center">
-                <a href="#">Cursos de Aperfeiçoamento</a>
-              </h2>
-              <p>
-                <span><code>* Cursos de aperfeiçoamento na área da educação com carga horária de no mínimo 120 horas.</code></span>
-              </p>
-
-              <div class="entry-content">
-                <form method="post" enctype="multipart/form-data">
+              <div class="contact col-lg-12" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+              <div class="row">
+                <div class="col-md-12">
+                <div class="info-box">
+                  <h2 class="entry-title">
+                    Cursos de Aperfeiçoamento
+                  </h2>
+                  <p>
+                    <span><code>* Cursos de aperfeiçoamento na área da educação com carga horária de no mínimo 120 horas.</code></span>
+                  </p>
+                </div>
+              </div>
+               <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{formset.management_form}}
                     <div class="row">
@@ -29,13 +28,15 @@
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
-                        <span class="col-md-6" style="margin-bottom:15px;">
-                        {{ forloop.counter }}
-                        {% for field in form.visible_fields %}
-                          {{ field.label }}
-                          {{ field }}
-                         <br>
-                        {% endfor %}</span>
+                        <div class="col-md-6">
+                            <div class="info-box" style="padding: 20px;">
+                                {% for field in form.visible_fields %}
+                                  {{ field.label }}
+                                  {{ field }}
+                                 <br>
+                                {% endfor %}
+                              </div>
+                            </div>
                         {% endfor %}
                     </div>
                     <br><div class="progress">
@@ -44,11 +45,7 @@
                     <button type="submit" class="btn btn-outline-primary">Salvar e Continuar</button>
                 </form>
               </div>
-
-            </article><!-- End blog entry -->
-
-          </div><!-- End blog entries list -->
-
+          </div><!-- End Contact Section -->
         </div>
 
       </div>
