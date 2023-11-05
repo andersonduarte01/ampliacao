@@ -1,0 +1,43 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Requerimento Ampliação{% endblock %}
+{% block conteudo %}
+  <main id="main">
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+          <div class="col-lg-12 entries">
+
+            <article class="entry">
+
+              <h2 class="entry-title">
+                <a href="#">Informações Pessoais</a>
+              </h2>
+              <p>
+                <span><code>* Email e senha cadastrados neste formulário serão exigidos para fazer inscrição.</code></span>
+              </p>
+
+              <div class="entry-content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div><br>
+                    <button type="submit" class="btn btn-outline-primary">Salvar</button>
+                    </form>
+              </div>
+
+            </article><!-- End blog entry -->
+
+          </div><!-- End blog entries list -->
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+{% endblock %}

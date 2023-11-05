@@ -1,0 +1,56 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Analise da Inscrição{% endblock %}
+{% block conteudo %}
+<main id="main">
+  <section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="sidebar">
+              {% if  professor.foto %}
+              <img class="img-thumbnail" src="{{professor.foto.url}}">
+              {% else %}
+              <img class="img-thumbnail" src="{% static 'assets/img/icone.jpg'%}">
+              {% endif %}
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">{{professor.nome}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">RG:</span> {{professor.rg}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">CPF: </span>{{professor.cpf}}</li>
+                <li class="list-group-item fw-bold text-primary">Solicitação de Ampliação</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">1º Opção: </span>{{professor.inscricao.opcao1}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">2º Opção: </span>{{professor.inscricao.opcao2}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">3º Opção: </span>{{professor.inscricao.opcao3}}</li>
+                <li class="list-group-item fw-bold text-primary">Informações do Concurso</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Ano de Realização: </span>{{professor.inscricao.concurso.realizacao}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Cargo: </span>{{professor.inscricao.concurso.area}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Data de Posse: </span>{{professor.inscricao.concurso.posse}}</li>
+              </ul>
+          </div><!-- End sidebar -->
+
+        </div>
+        <div class="col-lg-8 entries">
+
+          <article class="entry entry-single">
+            <h2 class="entry-title text-center">
+               <a href="#">Detalhes da Inscrição</a>
+            </h2>
+          </article>
+          <article class="entry entry-single">
+            <h5>
+               <a href="{{professor.inscricao.nomeacao.url}}" target="_blank">Informações Iniciais da Inscrição</a>
+            </h5>
+            <p class="text-danger"><a href="#">Termo de Posse</a></p>
+          </article>
+        </div><!-- End blog entries list -->
+
+        ><!-- End blog sidebar -->
+
+      </div>
+
+    </div>
+  </section>
+</main>
+{% endblock %}

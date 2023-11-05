@@ -1,0 +1,63 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Termo de Compromisso{% endblock %}
+{% block conteudo %}
+  <main id="main">
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+          <div class="col-lg-12 entries">
+
+            <article class="entry">
+
+              <h2 class="entry-title text-center">
+                Termo de Compromisso
+              </h2><br>
+              <p style="line-height: 2em;">
+                  Eu <span class="fw-bold">{{ professor.nome }}</span>, professor (a)
+                  em efetivo exercício, sob a matricula Nº <span class="fw-bold">{{professor.matricula}}</span>,
+                  portador (a) do RG Nº <span class="fw-bold">{{professor.rg}}</span> e inscrito no CPF
+                  <span class="fw-bold">{{professor.cpf}}</span>, requerente da Ampliação Definitiva de carga
+                  horária do Município de pedra Branca.
+              </p>
+
+                <p  style="line-height: 2em;">
+                    <span class="fw-bold">Declaro</span> que atendo aos requisitos exigidos pela Lei Municipal N° 829/2023 que dispõe da
+                    Ampliação Definitiva de Carga Horária aos Profissionais do Magistério de 100h para 200h
+                    (mensais) aos professores efetivos da Secretaria Municipal de Educação de Pedra Branca.
+                    Comprometendo-me a, caso seja aprovado e nomeado na Ampliação Definitiva, cumprir com zelo
+                    e probidade as funções que me serão confiadas.
+                </p>
+
+                <p  style="line-height: 2em;">
+                    <span class="fw-bold">Declaro</span>, ainda, sob a luz da Constituição Federal e Lei
+                    Orgânica Municipal, <span class="fw-bold">que estou ciente de que não poderei subcontratar</span> em caso de
+                    incompatibilidade de horários e <span class="fw-bold">nem cumular outro cargo, emprego ou função, em quaisquer
+                    instituições públicas ou privadas, nos períodos matutino e vespertino, de segunda-feira à
+                    sexta-feira</span>, que deverão ser dedicados ao magistério do município de Pedra Branca, sob
+                    pena de perder o direito a Ampliação Definitiva de carga horária ora pleiteada, além de
+                    responder nas esferas administrativas, civil e criminal.
+                </p>
+
+              <hr>
+              <div class="entry-content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <button type="submit" class="btn btn-outline-primary">Aceitar</button>
+                    </form>
+              </div>
+
+            </article><!-- End blog entry -->
+
+          </div><!-- End blog entries list -->
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+{% endblock %}

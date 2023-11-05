@@ -1,0 +1,55 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Cursos{% endblock %}
+{% block conteudo %}
+  <main id="main">
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+          <div class="col-lg-12 entries">
+
+            <article class="entry">
+
+              <h2 class="entry-title text-center">
+                <a href="#">Cursos de aperfeiçoamento</a>
+              </h2>
+              <p>
+                <span><code>* Cursos de aperfeiçoamento na área da educação com carga horária de no mínimo 120 horas.</code></span>
+              </p>
+
+              <div class="entry-content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{formset.management_form}}
+                    <div class="row">
+                        {% for form in formset %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        <span class="col-md-6" style="margin-bottom:15px;">
+                        {{ forloop.counter }}
+                        {% for field in form.visible_fields %}
+                          {{ field.label }}
+                          {{ field }}
+                         <br>
+                        {% endfor %}</span>
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-outline-primary">Salvar e Continuar</button>
+                </form>
+              </div>
+
+            </article><!-- End blog entry -->
+
+          </div><!-- End blog entries list -->
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+{% endblock %}

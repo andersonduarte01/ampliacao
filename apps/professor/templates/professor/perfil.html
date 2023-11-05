@@ -1,0 +1,261 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Detalhes Inscrição{% endblock %}
+{% block conteudo %}
+<main id="main">
+  {% if user.is_administrator %}
+  <section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+
+      <div class="row">
+        <article class="entry entry-single">
+            <h2 class="entry-title text-center">
+              <a href="{% url 'professor:administrador' %}">Ir para Painel de Controle</a>
+            </h2>
+          </article>
+      </div>
+
+    </div>
+  </section>
+  {% else %}
+  <section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+
+      <div class="row">
+        <div class="col-lg-4">
+
+          <div class="sidebar">
+              {% if  professor.foto %}
+              <img class="img-thumbnail" src="{{professor.foto.thumbnail.url}}">
+              {% else %}
+              <img class="img-thumbnail" src="{% static 'assets/img/icone.jpg'%}">
+              {% endif %}
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">{{professor.nome}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">RG:</span> {{professor.rg}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">CPF:</span> {{professor.cpf}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Data Nasc:</span> {{professor.data_nascimento}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Tel:</span> {{professor.telefone}}</li>
+                <li class="list-group-item text-primary fw-bold">Endereço</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Rua:</span> {{professor.rua}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Nº:</span> {{professor.numero}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Bairro:</span> {{professor.bairro}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;">
+                   <a href="{% url 'professor:up_professor' pk=professor.pk %}" class="btn btn-outline-primary btn-sm col-sm-12">Editar Perfil</a><br>
+                </li>
+                <li class="list-group-item" style="font-size: 0.9rem;">
+                <a href="{% url 'password_change' %}" class="btn btn-outline-primary btn-sm col-sm-12" style="margin-top: 10px;">Mudar Senha</a>
+                </li>
+              </ul>
+          </div><!-- End sidebar -->
+
+        </div>
+        <div class="col-lg-8 entries">
+
+          <article class="entry entry-single">
+
+            <div class="entry-img">
+              <img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
+            </div>
+
+            <h2 class="entry-title text-center">
+              {% if inscricao %}
+                {% if inscricao.concluido %}
+                  <a href="#">Inscrião Realizada com sucesso!!!</a>
+                {% else %}
+                  <a href="#">Inscrião Incompleta</a>
+                {% endif %}
+              {% else %}
+              <a href="#">Iniciar Inscrição</a>
+              {% endif %}
+            </h2>
+            {% if inscricao %}
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button class="accordion-button collapsed text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    <span style="margin-right: 10px;"><i class="bi bi-check-circle"></i> </span> Termo de nomeação
+                  </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <code>Termo de nomeação enviado com sucesso!</code>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingTwo">
+                  <button class="accordion-button collapsed text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                    <span style="margin-right: 10px;"><i class="bi bi-check-circle"></i> </span> Diploma
+                  </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <code>Diploma enviado com sucesso!</code>
+                  </div>
+                </div>
+              </div>
+
+              {% if info_acad %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingThree">
+                  <button class="accordion-button collapsed text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                    <span style="margin-right: 10px;"><i class="bi bi-check-circle"></i> </span>Informações Acadêmicas
+                  </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <code>Informações Acadêmicas enviadas com sucesso!</code>
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingThree1">
+                  <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree1" aria-expanded="false" aria-controls="flush-collapseThree1">
+                    <span style="margin-right: 10px;"><i class="bi bi-x-circle"></i> </span>Informações Acadêmicas
+                  </button>
+                </h2>
+                <div id="flush-collapseThree1" class="accordion-collapse collapse" aria-labelledby="flush-headingThree1" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <p>Para incluir as informações acadêmicas clique <a href="{% url 'inscricao:up_academica' %}">AQUI</a></p>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+
+              {% if concurso %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingFour1">
+                  <button class="accordion-button collapsed text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour1" aria-expanded="false" aria-controls="flush-collapseFour1">
+                    <span style="margin-right: 10px;"><i class="bi bi-check-circle"></i> </span>Informações sobre o Concurso
+                  </button>
+                </h2>
+                <div id="flush-collapseFour1" class="accordion-collapse collapse" aria-labelledby="flush-headingFour1" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <code>Informações enviadas com sucesso!</code>
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingFour">
+                  <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                    <span style="margin-right: 10px;"><i class="bi bi-x-circle"></i> </span>Informações sobre o Concurso
+                  </button>
+                </h2>
+                <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <p>Para adicionar informações sobre o concurso clique <a href="{% url 'inscricao:detail_concurso' %}">AQUI</a></p>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+
+              {% if  certificados %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingFive1">
+                  <button class="accordion-button collapsed text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive1" aria-expanded="false" aria-controls="flush-collapseFive1">
+                    <span style="margin-right: 10px;"><i class="bi bi-check-circle"></i> </span>Certificados
+                  </button>
+                </h2>
+                <div id="flush-collapseFive1" class="accordion-collapse collapse" aria-labelledby="flush-headingFive1" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    {% for certificado in certificados %}
+                     <code>{{certificado.curso}}</code><br>
+                    {% empty %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingFive">
+                  <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                    <span style="margin-right: 10px;"><i class="bi bi-x-circle"></i> </span>Certificados
+                  </button>
+                </h2>
+                <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <p>Para adicionar certificados de cursos de aperfeiçoamento clique <a href="{% url 'inscricao:up_certificado' %}">AQUI</a></p>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+
+              {% if  carga %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingSix1">
+                  <button class="accordion-button collapsed text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix1" aria-expanded="false" aria-controls="flush-collapseSix1">
+                    <span style="margin-right: 10px;"><i class="bi bi-check-circle"></i> </span>Comprovação carga horária suplementar
+                  </button>
+                </h2>
+                <div id="flush-collapseSix1" class="accordion-collapse collapse" aria-labelledby="flush-headingSix1" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    {% for horario in carga %}
+                     <code>{{horario.ano}} - {{horario.escola}} - {{horario.cargo}}</code><br>
+                    {% empty %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingSix">
+                  <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+                    <span style="margin-right: 10px;"><i class="bi bi-x-circle"></i> </span>Comprovação carga horária suplementar
+                  </button>
+                </h2>
+                <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <p>Para adicionar comprovação de carga horária suplementar clique <a href="{% url 'inscricao:up_requerimento' %}">AQUI</a></p>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+
+              {% if termo %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingSeven1">
+                  <button class="accordion-button collapsed text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven1" aria-expanded="false" aria-controls="flush-collapseSeven1">
+                    <span style="margin-right: 10px;"><i class="bi bi-check-circle"></i> </span>Termo de Compromisso
+                  </button>
+                </h2>
+                <div id="flush-collapseSeven1" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven1" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <code>Termo de compromisso respondido</code>
+                    .</div>
+                </div>
+              </div>
+              {% else %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingSeven">
+                  <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
+                    <span style="margin-right: 10px;"><i class="bi bi-x-circle"></i> </span>Termo de Compromisso
+                  </button>
+                </h2>
+                <div id="flush-collapseSeven" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <p>Para responder ao termo de compromisso clique <a href="{% url 'inscricao:up_termo' pk=inscricao.pk %}">AQUI</a></p>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+
+            </div>
+            {% else %}
+            <a class="btn btn-outline-primary" href="{% url 'inscricao:inscrever' %}">Realizar Inscrição</a>
+            {% endif %}
+          </article><!-- End blog entry -->
+        </div><!-- End blog entries list -->
+
+        ><!-- End blog sidebar -->
+
+      </div>
+
+    </div>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

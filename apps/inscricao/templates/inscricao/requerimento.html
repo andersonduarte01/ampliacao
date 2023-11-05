@@ -1,0 +1,56 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Carga Horária Suplementar{% endblock %}
+{% block conteudo %}
+  <main id="main">
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+          <div class="col-lg-12 entries">
+
+            <article class="entry">
+
+              <h2 class="entry-title text-center">
+                <a href="#">Ampliações de Carga Horária Anteriores</a>
+              </h2>
+
+              <div class="entry-content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{formset.management_form}}
+                    <div class="row">
+                        {% for form in formset %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        <hr style="margin-top: 30px;">
+                        <span class="col-md-12" style="margin-bottom:15px;">
+                        <h3 class="text-primary">{{ forloop.counter }}º Semestre</h3>
+                        </span>
+                        {% for field in form.visible_fields %}
+                          {{ field.label }}
+                          {{ field }}
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <br><div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">Progresso da inscrição 80%</div>
+                    </div><br>
+                    <hr>
+                    <button type="submit" class="btn btn-outline-primary">Salvar e Continuar</button>
+                </form>
+              </div>
+
+            </article><!-- End blog entry -->
+
+          </div><!-- End blog entries list -->
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+{% endblock %}

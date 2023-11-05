@@ -1,0 +1,66 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Painel{% endblock %}
+{% block conteudo %}
+<main id="main">
+  <section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="sidebar">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center"><h5>Painel ADM</h5></li>
+                <li class="list-group-item list-group-item-action text-center">
+                  <a href="{% url 'professor:insc_list' %}">
+                    Todas as Inscrições
+                  </a>
+                </li>
+                <li class="list-group-item list-group-item-action text-center">
+                  <a href="{% url 'professor:pend_list' %}">Inscrições Aguardando</a>
+                </li>
+                <li class="list-group-item list-group-item-action text-center">
+                  <a href="{% url 'professor:concl_list' %}">Inscrições Analisadas</a>
+                </li>
+                <li class="list-group-item list-group-item-action text-center">
+                  <a href="{% url 'professor:prof_list' %}">Professores cadastrados</a>
+                </li>
+                <li class="list-group-item list-group-item-action text-center">
+                  <a href="#">Relatórios</a>
+                </li>
+              </ul>
+          </div><!-- End sidebar -->
+
+        </div>
+        <div class="contact col-lg-8" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+              <div class="row">
+                <div class="col-md-12">
+                <div class="info-box">
+                  <i class="bi bi-people"></i>
+                  <h3>Inscrições</h3>
+                  <p class="fw-bold text-primary">{{concluidos}}</p>
+                </div>
+              </div>
+                <div class="col-md-6">
+                  <div class="info-box">
+                    <i class="bi bi-person-check"></i>
+                    <h3>Analisados</h3>
+                    <p class="fw-bold text-info">{{analisadas}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info-box">
+                    <i class="bi bi-person-dash"></i>
+                    <h3>Aguardando</h3>
+                    <p class="fw-bold text-danger">{{pendentes}}</p>
+                  </div>
+                </div>
+              </div>
+          </div><!-- End Contact Section -->
+       </div>
+
+    </div>
+  </section>
+</main>
+{% endblock %}

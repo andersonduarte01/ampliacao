@@ -1,0 +1,40 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Informações Acadêmicas{% endblock %}
+{% block conteudo %}
+  <main id="main">
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+          <div class="col-lg-12 entries">
+
+            <article class="entry">
+
+              <h2 class="entry-title text-center">
+                <a href="#">Informações Acadêmicas</a>
+              </h2>
+
+              <div class="entry-content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <br><div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">Progresso da inscrição 40%</div>
+                    </div><br>
+                    <button type="submit" class="btn btn-outline-primary">Salvar e Continuar</button>
+                    </form>
+              </div>
+
+            </article><!-- End blog entry -->
+
+          </div><!-- End blog entries list -->
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+{% endblock %}
