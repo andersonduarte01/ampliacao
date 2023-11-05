@@ -13,7 +13,7 @@ from ..inscricao.decoradores import StaffRequiredMixin
 
 class InscricaoView(LoginRequiredMixin, CreateView):
     model = Inscricao
-    fields = ('nomeacao', 'diploma', 'opcao1', 'opcao2', 'opcao3')
+    fields = ('nomeacao', 'diploma', 'diploma1', 'diploma2', 'opcao1', 'opcao2', 'opcao3')
     template_name = 'inscricao/inscricao.html'
     context_object_name = 'form'
 
