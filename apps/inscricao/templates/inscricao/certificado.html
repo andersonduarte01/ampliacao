@@ -17,6 +17,7 @@
                   </h2>
                   <p>
                     <span><code>* Cursos de aperfeiçoamento na área da Educação com carga horária de no mínimo 120 horas.</code></span>
+                    <span><code>* Nos termos do art. 6º, do Decreto Nº 33, de 23 de Outubro de 2023.</code></span>
                   </p>
                 </div>
               </div>
@@ -30,6 +31,7 @@
                         {% endfor %}
                         <div class="col-md-6">
                             <div class="info-box" style="padding: 20px;">
+                                {{ forloop.counter }}
                                 {% for field in form.visible_fields %}
                                   {{ field.label }}
                                   {{ field }}
