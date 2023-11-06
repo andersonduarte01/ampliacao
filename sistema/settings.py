@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-bzq#poe@17@-29w-d&s7)zm@tpo4od+7md&v149c!f^vg@9(*='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'apps.professor',
     'apps.accounts',
     'apps.inscricao',
+    'apps.erros',
     ###
     'cpf_field',
     'stdimage',
