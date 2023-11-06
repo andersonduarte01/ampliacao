@@ -14,14 +14,14 @@ class InformacoesAcademicas(models.Model):
     area_especializacao = models.CharField(verbose_name='Especialização e/ou Habilitação', max_length=180,
                                      help_text='Caso tenha marcado sim em especialização', null=True, blank=True)
     anexo = models.FileField(upload_to='docs/nomeacao', verbose_name='Anexar arquivo', null=True, blank=True,
-                             help_text='Anexar arquivo referente a Especialização e/ou Habilitação')
+                             help_text='Anexar arquivo referente a Especialização e/ou Habilitação', max_length=300)
     status = models.BooleanField(verbose_name='Concluido', default=False)
 
 
 class Concurso(models.Model):
     realizacao = models.CharField(verbose_name='Ano de realização do Concurso', max_length=12)
     area = models.CharField(verbose_name='Cargo do Concurso', max_length=80)
-    posse = models.CharField(verbose_name='Data da posse do Concurso', max_length=20)
+    posse = models.CharField(verbose_name='Data da posse do Concurso', max_length=20, help_text='dia/mes/ano')
     status = models.BooleanField(verbose_name='Concluido', default=False)
 
 
@@ -57,10 +57,10 @@ class Inscricao(models.Model):
     opcao1 = models.CharField(verbose_name='1º Opção para Ampliação', max_length=60, choices=RPT1, default='')
     opcao2 = models.CharField(verbose_name='2º Opção para Ampliação', max_length=60, choices=RPT2, default='', null=True, blank=True)
     opcao3 = models.CharField(verbose_name='3º Opção para Ampliação', max_length=60, choices=RPT3, default='', null=True, blank=True)
-    nomeacao = models.FileField(upload_to='docs/nomeacoes', verbose_name='Termo de posse')
-    diploma = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma')
-    diploma1 = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', null=True, blank=True, help_text='Opcional')
-    diploma2 = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', null=True, blank=True, help_text='Opcional')
+    nomeacao = models.FileField(upload_to='docs/nomeacoes', verbose_name='Termo de Posse', max_length=300)
+    diploma = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', max_length=300)
+    diploma1 = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', null=True, blank=True, help_text='Opcional', max_length=300)
+    diploma2 = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', null=True, blank=True, help_text='Opcional', max_length=300)
     informacoes_academicas = models.ForeignKey(InformacoesAcademicas, verbose_name='Informações Acadêmicas',
                                                on_delete=models.DO_NOTHING, null=True, blank=True)
     concurso = models.ForeignKey(Concurso, on_delete=models.DO_NOTHING,
@@ -105,8 +105,7 @@ class RequerimentoAmpliacao(models.Model):
          'Exercendo cargo comissionado na esfera pública municipal'),
     ]
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
-    ano = models.CharField(verbose_name='Ano', max_length=20, help_text='Ano')
-    escola = models.CharField(verbose_name='Escola', max_length=120)
+    escola = models.CharField(verbose_name='Escola', max_length=120, null=True, blank=True)
     cargo = models.CharField(verbose_name='Qual o cargo?', max_length=120, null=True, blank=True)
     opcao = models.CharField(verbose_name='Ampliação temporária', choices=RESPOSTA, default='', max_length=200)
     status = models.BooleanField(verbose_name='Concluido', default=False)
@@ -115,7 +114,7 @@ class RequerimentoAmpliacao(models.Model):
 class Certificado(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     curso = models.CharField(verbose_name='Curso', max_length=120)
-    certificado = models.FileField(upload_to='docs/certificado', verbose_name='Certificado')
+    certificado = models.FileField(upload_to='docs/certificado', verbose_name='Certificado', max_length=300)
 
 
 class Resultado(models.Model):

@@ -44,12 +44,13 @@
 
               <hr>
               <div class="entry-content">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-                    <button type="submit" class="btn btn-outline-primary">Aceitar</button>
-                    </form>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  Eu aceito os termos
+                </button>
               </div>
+
+
 
             </article><!-- End blog entry -->
 
@@ -60,4 +61,27 @@
       </div>
     </section>
   </main>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Termo de Compromisso</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5 class="text-danger">Tem certeza que concorda com os termos?</h5><br>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+          </div>
+          <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-primary">Eu Aceito</button>
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Sair</button>
+       </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

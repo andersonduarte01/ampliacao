@@ -1,56 +1,72 @@
 {% extends 'base1.html' %}
 {% load static %}
 {% load django_bootstrap5 %}
-{% block titulo %}Carga Horária Suplementar{% endblock %}
+{% block titulo %}Ampliações de Carga Horária Anteriores{% endblock %}
 {% block conteudo %}
-  <main id="main">
+<main id="main">
     <section id="blog" class="blog">
-      <div class="container" data-aos="fade-up">
+        <div class="container" data-aos="fade-up">
 
-        <div class="row">
+            <div class="row">
 
-          <div class="col-lg-12 entries">
+                <div class="col-lg-12 entries">
 
-            <article class="entry">
+                    <article class="entry">
 
-              <h2 class="entry-title text-center">
-                <a href="#">Exercício de carga horária suplementar(comprovação).</a>
-              </h2>
+                        <h2 class="entry-title text-center">
+                            Ampliações de Carga Horária Anteriores
+                        </h2>
 
-              <div class="entry-content">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{formset.management_form}}
-                    <div class="row">
-                        {% for form in formset %}
-                        {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                        {% endfor %}
-                        <hr style="margin-top: 30px;">
-                        <span class="col-md-12" style="margin-bottom:15px;">
-                        <h3 class="text-primary">{{ forloop.counter }}º Semestre</h3>
-                        </span>
-                        {% for field in form.visible_fields %}
-                          {{ field.label }}
-                          {{ field }}
-                        {% endfor %}
-                        {% endfor %}
-                    </div>
-                    <br><div class="progress">
-                      <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">Progresso da inscrição 80%</div>
-                    </div><br>
-                    <hr>
-                    <button type="submit" class="btn btn-outline-primary">Salvar e Continuar</button>
-                </form>
-              </div>
+                        <div class="entry-content">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <h3 class="text-primary">1º Semestre - 2021</h3>
+                                <br>
+                                {{ formset.management_form }}
+                                {{ formset.forms.0.as_p }}
+                                <br>
+                                <h3 class="text-primary">2º Semestre - 2021</h3>
+                                <br>
+                                <!-- Formulário 2 -->
+                                {{ formset.forms.1.as_p }}
+                                <br>
+                                <h3 class="text-primary">3º Semestre - 2022</h3>
+                                <br>
+                                <!-- Formulário 3 -->
+                                {{ formset.forms.2.as_p }}
+                                <br>
+                                <h3 class="text-primary">4º Semestre - 2022</h3>
+                                <br>
+                                <!-- Formulário 4 -->
+                                {{ formset.forms.3.as_p }}
+                                <br>
+                                <h3 class="text-primary">5º Semestre - 2023</h3>
+                                <br>
+                                <!-- Formulário 5 -->
+                                {{ formset.forms.4.as_p }}
+                                <br>
+                                <h3 class="text-primary">6º Semestre - 2023</h3>
+                                <br>
+                                <!-- Formulário 6 -->
+                                {{ formset.forms.5.as_p }}
 
-            </article><!-- End blog entry -->
+                                <!-- Progresso e botão de envio -->
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">Progresso da inscrição 80%</div>
+                                </div>
+                                <hr>
+                                <button type="submit" class="btn btn-outline-primary">Salvar e Continuar</button>
+                            </form>
 
-          </div><!-- End blog entries list -->
+                        </div>
+
+                    </article><!-- End blog entry -->
+
+                </div><!-- End blog entries list -->
+
+            </div>
 
         </div>
-
-      </div>
     </section>
-  </main>
+</main>
 {% endblock %}

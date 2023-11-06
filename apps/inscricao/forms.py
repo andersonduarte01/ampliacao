@@ -22,12 +22,10 @@ class InscricaoForm(forms.ModelForm):
         fields = ['professor', 'nomeacao', 'diploma']
 
 
-
 class RequerimentoForm(forms.ModelForm):
-
     class Meta:
         model = RequerimentoAmpliacao
-        fields = ['ano', 'escola', 'opcao', 'cargo']
+        fields = ['escola', 'opcao', 'cargo']
         widgets = {
             'ano': TextInput(
                 attrs={'class': 'form-control'}),

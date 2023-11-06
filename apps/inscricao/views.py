@@ -89,26 +89,26 @@ def certificadoTeste(request):
 
 @login_required
 def requerimentoTeste(request):
-
-    RequerimentoFormSet = modelformset_factory(RequerimentoAmpliacao, form=RequerimentoForm, extra=6, max_num=6)
+    RequerimentoFormSet = formset_factory(RequerimentoForm, extra=6, max_num=6)
     professor = Professor.objects.get(id=request.user.id)
     inscricao = Inscricao.objects.get(professor=professor)
-    formset = RequerimentoFormSet()
     if request.method == 'POST':
-        formset = RequerimentoFormSet(request.POST, request.FILES, queryset=RequerimentoAmpliacao.objects.none())
+        formset = RequerimentoFormSet(request.POST, request.FILES)
         if formset.is_valid():
+            # Processar os formulários individualmente
             for form in formset:
-                questao = form.save(commit=False)
-                questao.inscricao = inscricao
-                questao.save()
-            formset.save()
+                if form.is_valid():
+                    questao = form.save(commit=False)
+                    questao.inscricao = inscricao
+                    questao.save()
 
+            # Redirecionar após salvar os formulários
             url = reverse_lazy('inscricao:termo', kwargs={'pk': inscricao.pk})
             return HttpResponseRedirect(url)
     else:
-        formset = RequerimentoFormSet(queryset=RequerimentoAmpliacao.objects.none())
-    return render(request, 'inscricao/requerimento.html',
-                  {'formset': formset})
+        formset = RequerimentoFormSet()
+
+    return render(request, 'inscricao/requerimento.html', {'formset': formset})
 
 
 class Termo(LoginRequiredMixin, UpdateView):
