@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import formset_factory, modelformset_factory
@@ -10,6 +12,15 @@ from .forms import CertificadoForm, RequerimentoForm, ConcursoForm
 from .models import Inscricao, InformacoesAcademicas, Concurso, RequerimentoAmpliacao, Certificado, Resultado
 from ..professor.models import Professor
 from ..inscricao.decoradores import StaffRequiredMixin
+import unicodedata
+
+def generate_random_filename(filename):
+    if filename:
+        ext = filename.split('.')[-1]  # Obtém a extensão do arquivo original
+        random_name = str(uuid.uuid4())  # Gera um nome aleatório
+        new_filename = f"{random_name}.{ext}"  # Cria o novo nome do arquivo
+        return new_filename
+    return filename  # Retorna o nome original se for None
 
 class InscricaoView(LoginRequiredMixin, CreateView):
     model = Inscricao
@@ -24,6 +35,10 @@ class InscricaoView(LoginRequiredMixin, CreateView):
         info = form.save(commit=False)
         professor = Professor.objects.get(id=self.request.user.id)
         info.professor = professor
+        info.nomeacao.name = generate_random_filename(info.nomeacao.name)
+        info.diploma.name = generate_random_filename(info.diploma.name)
+        info.diploma1.name = generate_random_filename(info.diploma1.name)
+        info.diploma2.name = generate_random_filename(info.diploma2.name)
         info.save()
         return super().form_valid(form)
 
