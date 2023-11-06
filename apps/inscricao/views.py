@@ -57,11 +57,11 @@ class InfoAcademicas(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         info = form.save(commit=False)
         info.status = True
+        info.anexo.name = generate_random_filename(info.anexo.name)
         info.save()
         professor = Professor.objects.get(id=self.request.user.id)
         inscricao = Inscricao.objects.get(professor=professor)
         inscricao.informacoes_academicas = info
-        info.anexo.name = generate_random_filename(info.anexo.name)
         inscricao.save()
         return super().form_valid(form)
 
@@ -160,11 +160,11 @@ class InfoAcademicasUp(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         info = form.save(commit=False)
         info.status = True
+        info.anexo.name = generate_random_filename(info.anexo.name)
         info.save()
         professor = Professor.objects.get(id=self.request.user.id)
         inscricao = Inscricao.objects.get(professor=professor)
         inscricao.informacoes_academicas = info
-        info.anexo.name = generate_random_filename(info.anexo.name)
         inscricao.save()
         return super().form_valid(form)
 
