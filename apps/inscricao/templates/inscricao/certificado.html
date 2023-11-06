@@ -31,7 +31,7 @@
                         {% endfor %}
                         <div class="col-md-6">
                             <div class="info-box" style="padding: 20px;">
-                                {{ forloop.counter }}
+                                {{forloop.counter}}
                                 {% for field in form.visible_fields %}
                                   {{ field.label }}
                                   {{ field }}

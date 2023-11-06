@@ -65,7 +65,7 @@ class Inscricao(models.Model):
                                                on_delete=models.DO_NOTHING, null=True, blank=True)
     concurso = models.ForeignKey(Concurso, on_delete=models.DO_NOTHING,
                                  verbose_name='Informações sobre o concurso', null=True, blank=True)
-    termo = models.BooleanField(verbose_name='Sim, eu aceito os termos.', default=False)
+    termo = models.BooleanField(verbose_name='Sim, eu aceito os termos', default=False)
     concluido = models.BooleanField(verbose_name='Concluido', default=False)
     analisado = models.BooleanField(verbose_name='Analisado', default=False)
 
