@@ -22,6 +22,7 @@ def generate_random_filename(filename):
         return new_filename
     return filename  # Retorna o nome original se for None
 
+
 class InscricaoView(LoginRequiredMixin, CreateView):
     model = Inscricao
     fields = ('nomeacao', 'diploma', 'diploma1', 'diploma2', 'opcao1', 'opcao2', 'opcao3')
@@ -60,6 +61,7 @@ class InfoAcademicas(LoginRequiredMixin, CreateView):
         professor = Professor.objects.get(id=self.request.user.id)
         inscricao = Inscricao.objects.get(professor=professor)
         inscricao.informacoes_academicas = info
+        info.anexo.name = generate_random_filename(info.anexo.name)
         inscricao.save()
         return super().form_valid(form)
 
@@ -94,6 +96,7 @@ def certificadoTeste(request):
             for form in formset:
                 questao = form.save(commit=False)
                 questao.inscricao = inscricao
+                questao.certificado.name = generate_random_filename(questao.certificado.name)
                 questao.save()
 
             url = reverse_lazy('inscricao:requerimento')
@@ -161,6 +164,7 @@ class InfoAcademicasUp(LoginRequiredMixin, CreateView):
         professor = Professor.objects.get(id=self.request.user.id)
         inscricao = Inscricao.objects.get(professor=professor)
         inscricao.informacoes_academicas = info
+        info.anexo.name = generate_random_filename(info.anexo.name)
         inscricao.save()
         return super().form_valid(form)
 
@@ -195,6 +199,7 @@ def certificadoUp(request):
             for form in formset:
                 questao = form.save(commit=False)
                 questao.inscricao = inscricao
+                questao.certificado.name = generate_random_filename(questao.certificado.name)
                 questao.save()
 
             url = reverse_lazy('professor:detalhes')
