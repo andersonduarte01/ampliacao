@@ -1,5 +1,6 @@
 from django.db import models
 from ..professor.models import Professor
+from .decoradores import validate_pdf_extension
 
 
 class InformacoesAcademicas(models.Model):
@@ -12,9 +13,11 @@ class InformacoesAcademicas(models.Model):
     especializacao = models.CharField(verbose_name='Curso de Especialização (Pós Graduação Lato sensu)',
                                       choices=RESPOSTA, default='NÃO', max_length=20)
     area_especializacao = models.CharField(verbose_name='Especialização e/ou Habilitação', max_length=180,
-                                     help_text='Caso tenha marcado sim em especialização', null=True, blank=True)
+                                     help_text='Caso tenha marcado sim em especialização', null=True,
+                                           blank=True)
     anexo = models.FileField(upload_to='docs/nomeacao', verbose_name='Anexar arquivo', null=True, blank=True,
-                             help_text='Anexar arquivo referente a Especialização e/ou Habilitação', max_length=300)
+                             help_text='Anexar arquivo referente a Especialização e/ou Habilitação',
+                             max_length=300, validators=[validate_pdf_extension])
     status = models.BooleanField(verbose_name='Concluido', default=False)
 
 
@@ -57,10 +60,14 @@ class Inscricao(models.Model):
     opcao1 = models.CharField(verbose_name='1º Opção para Ampliação', max_length=60, choices=RPT1, default='')
     opcao2 = models.CharField(verbose_name='2º Opção para Ampliação', max_length=60, choices=RPT2, default='', null=True, blank=True)
     opcao3 = models.CharField(verbose_name='3º Opção para Ampliação', max_length=60, choices=RPT3, default='', null=True, blank=True)
-    nomeacao = models.FileField(upload_to='docs/nomeacoes', verbose_name='Termo de Posse', max_length=300)
-    diploma = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', max_length=300)
-    diploma1 = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', null=True, blank=True, help_text='Opcional', max_length=300)
-    diploma2 = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', null=True, blank=True, help_text='Opcional', max_length=300)
+    nomeacao = models.FileField(upload_to='docs/nomeacoes', verbose_name='Termo de Posse', max_length=300,
+                                validators=[validate_pdf_extension])
+    diploma = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', max_length=300,
+                               validators=[validate_pdf_extension])
+    diploma1 = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', null=True, blank=True, help_text='Opcional',
+                                max_length=300, validators=[validate_pdf_extension])
+    diploma2 = models.FileField(upload_to='docs/nomeacao', verbose_name='Diploma', null=True, blank=True, help_text='Opcional',
+                                max_length=300, validators=[validate_pdf_extension])
     informacoes_academicas = models.ForeignKey(InformacoesAcademicas, verbose_name='Informações Acadêmicas',
                                                on_delete=models.DO_NOTHING, null=True, blank=True)
     concurso = models.ForeignKey(Concurso, on_delete=models.DO_NOTHING,
@@ -114,7 +121,8 @@ class RequerimentoAmpliacao(models.Model):
 class Certificado(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     curso = models.CharField(verbose_name='Curso', max_length=120)
-    certificado = models.FileField(upload_to='docs/certificado', verbose_name='Certificado', max_length=300)
+    certificado = models.FileField(upload_to='docs/certificado', verbose_name='Certificado',
+                                   max_length=300, validators=[validate_pdf_extension], help_text='Permitido apenas arquivos em formato PDF.')
 
 
 class Resultado(models.Model):

@@ -27,7 +27,7 @@
 
           <div class="sidebar">
               {% if  professor.foto %}
-              <img class="img-thumbnail" src="{{professor.foto.thumbnail.url}}">
+              <img class="img-thumbnail center" src="{{professor.foto.url}}" style="width: 300px; height: 300px;">
               {% else %}
               <img class="img-thumbnail" src="{% static 'assets/img/icone.jpg'%}">
               {% endif %}
@@ -54,15 +54,12 @@
         <div class="col-lg-8 entries">
 
           <article class="entry entry-single">
-
-            <div class="entry-img">
-              <img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
-            </div>
-
             <h2 class="entry-title text-center">
               {% if inscricao %}
                 {% if inscricao.concluido %}
                   <a href="#">Inscrião Realizada com sucesso!!!</a>
+<!--              <br>-->
+<!--                  <a href="{% url 'relatorios:related' pk=inscricao.pk %}">Comprovante de Inscrição</a>-->
                 {% else %}
                   <a href="#">Inscrião Incompleta</a>
                 {% endif %}

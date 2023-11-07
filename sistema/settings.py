@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.inscricao',
     'apps.erros',
+    'apps.relatorios',
     ###
     'cpf_field',
     'stdimage',

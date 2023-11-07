@@ -7,7 +7,7 @@ from stdimage import StdImageField
 
 class Professor(Usuario):
     foto = StdImageField(upload_to='Imagens/perfil',
-                         variations={'thumbnail': {'width': 600, 'height': 800}})
+                         variations={'thumbnail': {'width': 300, 'height': 400}})
     lotado = models.CharField(verbose_name='Escola', max_length=120, help_text='Escola em que esta lotado')
     data_nascimento = models.CharField(verbose_name='Data de Nascimento', null=True, blank=True, help_text='dd/mm/aaaa', max_length=12)
     rg = models.CharField(verbose_name='RG', max_length=20)
