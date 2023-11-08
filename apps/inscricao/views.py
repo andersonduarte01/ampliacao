@@ -222,12 +222,15 @@ def requerimentoUp(request):
     formset = RequerimentoFormSet()
     if request.method == 'POST':
         formset = RequerimentoFormSet(request.POST, request.FILES, queryset=RequerimentoAmpliacao.objects.none())
+        contador =  1
         if formset.is_valid():
             for form in formset:
                 questao = form.save(commit=False)
                 questao.inscricao = inscricao
+                questao.semestre = f'{contador}º Semestre - 2021'
                 questao.anexo.name = generate_random_filename(questao.anexo.name)
                 questao.save()
+                contador+=1
             formset.save()
 
             url = reverse_lazy('professor:detalhes')
