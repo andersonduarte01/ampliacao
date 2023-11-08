@@ -119,6 +119,7 @@ def requerimentoTeste(request):
                     questao = form.save(commit=False)
                     questao.inscricao = inscricao
                     questao.semestre = f'{contador}º Semestre - 2021'
+                    questao.anexo.name = generate_random_filename(questao.anexo.name)
                     questao.save()
                     contador += 1
                     print(contador)
@@ -225,6 +226,7 @@ def requerimentoUp(request):
             for form in formset:
                 questao = form.save(commit=False)
                 questao.inscricao = inscricao
+                questao.anexo.name = generate_random_filename(questao.anexo.name)
                 questao.save()
             formset.save()
 
