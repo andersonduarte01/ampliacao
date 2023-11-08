@@ -10,11 +10,43 @@ class InscricaoAdmin(admin.ModelAdmin):
     def professor_telefone(self, obj):
         return obj.professor.telefone
 
-    professor_telefone.short_description = 'Telefone do Professor'  # Nome da coluna na lista
+    professor_telefone.short_description = 'Telefone do Professor'
 
 
 admin.site.register(Inscricao, InscricaoAdmin)
-admin.site.register(Certificado)
+
+
+class CertificadoAdmin(admin.ModelAdmin):
+    list_display = ('inscricao', 'curso')
+
+
+admin.site.register(Certificado, CertificadoAdmin)
+
+
 admin.site.register(RequerimentoAmpliacao)
-admin.site.register(Concurso)
-admin.site.register(InformacoesAcademicas)
+
+
+class ConcursoAdmin(admin.ModelAdmin):
+    list_display = ('inscricao', 'realizacao', 'area', 'posse')
+
+    def inscricao(self, obj):
+        inscricao = Inscricao.objects.get(concurso=obj)
+        return inscricao
+
+    inscricao.short_description = 'nome'
+
+
+admin.site.register(Concurso, ConcursoAdmin)
+
+
+class InfoAcadAdmin(admin.ModelAdmin):
+    list_display = ('inscricao', 'area_formacao', 'especializacao', 'area_especializacao')
+
+    def inscricao(self, obj):
+        inscricao = Inscricao.objects.get(informacoes_academicas=obj)
+        return inscricao
+
+    inscricao.short_description = 'nome'
+
+
+admin.site.register(InformacoesAcademicas, InfoAcadAdmin)
