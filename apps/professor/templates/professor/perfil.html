@@ -24,7 +24,6 @@
 
       <div class="row">
         <div class="col-lg-4">
-
           <div class="sidebar">
               {% if  professor.foto %}
               <img class="img-thumbnail center" src="{{professor.foto.url}}" style="width: 300px; height: 300px;">
@@ -47,6 +46,13 @@
                 <li class="list-group-item" style="font-size: 0.9rem;">
                 <a href="{% url 'password_change' %}" class="btn btn-outline-primary btn-sm col-sm-12" style="margin-top: 10px;">Mudar Senha</a>
                 </li>
+                <li class="list-group-item" style="font-size: 0.9rem;">
+                {% if inscricao.concluido %}
+                  <a class="btn btn-outline-primary btn-sm col-sm-12" href="{% url 'relatorios:related' pk=inscricao.pk %}">Comprovante de Inscrição</a>
+                {% else %}
+                  <a href="#"></a>
+                {% endif %}
+                </li>
               </ul>
           </div><!-- End sidebar -->
 
@@ -58,8 +64,6 @@
               {% if inscricao %}
                 {% if inscricao.concluido %}
                   <a href="#">Inscrião Realizada com sucesso!!!</a>
-<!--              <br>-->
-<!--                  <a href="{% url 'relatorios:related' pk=inscricao.pk %}">Comprovante de Inscrição</a>-->
                 {% else %}
                   <a href="#">Inscrião Incompleta</a>
                 {% endif %}

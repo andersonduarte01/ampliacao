@@ -1,61 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <title>{{inscricao}}</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
     }
 
-    .header {
-      color: #000;
-      padding: 10px;
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
       text-align: center;
-      font-size: 16px;
     }
 
-    .footer {
-      background-color: #0080FF;
-      color: #fff;
-      padding: 10px;
+    p {
       text-align: center;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      font-size: 12px;
-    }
-
-    .content {
-      margin-top: 20px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 2px;
     }
 
     th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
+      padding: 5px;
       text-align: left;
-      font-size: 12px;
     }
 
     th {
-      background-color: #0080FF;
-      color: #fff;
-      font-size: 13px;
-    }
-
-    tr:nth-child(even) {
-      background-color: #0080FF;
+      background-color: #f0f0f0;
     }
   </style>
 </head>
 <body>
-<h1>Comprovante de Inscrição</h1>
-<h3>{{inscricao}}</h3>
+  <div class="container">
+    <h1>Comprovante de Inscrição</h1>
+    <table>
+      <tr>
+        <th style="width:200px;">Nome</th>
+        <td style="width:800px;">{{inscricao}}</td>
+      </tr>
+      <tr>
+        <th style="width:200px;">CPF</th>
+        <td style="width:800px;">{{inscricao.professor.cpf}}</td>
+      </tr>
+      <tr>
+        <th style="width:200px;">RG</th>
+        <td style="width:800px;">{{inscricao.professor.rg}}</td>
+      </tr>
+      <tr>
+        <th style="width:200px;">Matricula</th>
+        <td style="width:800px;">{{inscricao.professor.matricula}}</td>
+      </tr>
+      <tr>
+        <th style="width:200px;">Opções de Ampliação</th>
+        <td style="width:800px;">
+          {% if inscricao.opcao1 == None %}
+          {% else %}
+          {{inscricao.opcao1}}
+          {% endif %}
+          {% if inscricao.opcao2 == None %}
+          {% else %}
+           - {{inscricao.opcao2}}
+          {% endif %}
+          {% if inscricao.opcao3 == None %}
+          {% else %}
+            - {{inscricao.opcao3}}
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <th style="width:200px;">Status da Inscrição</th>
+        <td style="width:800px;font-weight: bold;">
+          {% if inscricao.concluido %}
+           Realizada com Sucesso
+          {% else %}
+           Pendente
+          {% endif %}
+        </td>
+      </tr>
+    </table>
+  </div>
 </body>
 </html>
-

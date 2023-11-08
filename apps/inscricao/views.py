@@ -113,12 +113,16 @@ def requerimentoTeste(request):
     if request.method == 'POST':
         formset = RequerimentoFormSet(request.POST, request.FILES)
         if formset.is_valid():
-            # Processar os formulários individualmente
+            contador = 1
             for form in formset:
                 if form.is_valid():
                     questao = form.save(commit=False)
                     questao.inscricao = inscricao
+                    questao.semestre = f'{contador}º Semestre - 2021'
                     questao.save()
+                    contador += 1
+                    print(contador)
+
 
             # Redirecionar após salvar os formulários
             url = reverse_lazy('inscricao:termo', kwargs={'pk': inscricao.pk})

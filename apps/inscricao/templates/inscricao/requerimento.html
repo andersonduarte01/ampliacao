@@ -2,6 +2,9 @@
 {% load static %}
 {% load django_bootstrap5 %}
 {% block titulo %}Ampliações de Carga Horária Anteriores{% endblock %}
+{% block estilo %}
+
+{% endblock %}
 {% block conteudo %}
 <main id="main">
     <section id="blog" class="blog">
@@ -69,4 +72,37 @@
         </div>
     </section>
 </main>
+{% endblock %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Função para mostrar/ocultar o campo "cargo" quando a seleção muda
+        function toggleCargoField() {
+            // Obtém o ID do campo de opção selecionado
+            var selectedOptionId = $(this).attr('id');
+
+            // Remove o prefixo "id_form-" para obter o índice
+            var index = selectedOptionId.replace('id_form-', '').replace('-opcao', '');
+
+            // ID do campo de cargo correspondente
+            var cargoId = "id_form-" + index + "-cargo";
+
+            // Exibir o campo de cargo se a opção for "Exercendo cargo comissionado na esfera pública municipal"
+            if ($(this).val() === "Exercendo cargo comissionado na esfera pública municipal") {
+                $("#" + cargoId).show();
+            } else {
+                $("#" + cargoId).hide();
+            }
+        }
+
+        // Vincula a função a todos os campos de seleção de opção
+        $("[id^='id_form-'][id$='-opcao']").change(toggleCargoField);
+
+        // Inicialmente, oculte todos os campos de cargo
+        $("[id^='id_form-'][id$='-cargo']").hide();
+    });
+</script>
+
+
 {% endblock %}

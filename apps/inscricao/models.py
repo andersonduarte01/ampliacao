@@ -98,6 +98,7 @@ class Inscricao(models.Model):
 
 class RequerimentoAmpliacao(models.Model):
     RESPOSTA = [
+        ('Selecione aqui', 'Selecione aqui'),
         ('Não mpliado', 'Não ampliado'),
         ('Lotado em regência em sala de aula', 'Lotado em regência em sala de aula'),
         ('Lotado em regência em ambientes educacionais de aprendizagem '
@@ -113,9 +114,15 @@ class RequerimentoAmpliacao(models.Model):
     ]
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     escola = models.CharField(verbose_name='Escola', max_length=120, null=True, blank=True)
+    semestre = models.CharField(verbose_name='Semestre', max_length=120, null=True, blank=True)
     cargo = models.CharField(verbose_name='Qual o cargo?', max_length=120, null=True, blank=True)
-    opcao = models.CharField(verbose_name='Ampliação temporária', choices=RESPOSTA, default='', max_length=200)
+    anexo = models.FileField(upload_to='docs/nomeacao', verbose_name='Anexar ficha financeira', null=True, blank=True,
+                                max_length=300, validators=[validate_pdf_extension])
+    opcao = models.CharField(verbose_name='Ampliação Temporária', choices=RESPOSTA, default='', max_length=200)
     status = models.BooleanField(verbose_name='Concluido', default=False)
+
+    def __str__(self):
+        return f'{self.inscricao} - {self.semestre}'
 
 
 class Certificado(models.Model):
