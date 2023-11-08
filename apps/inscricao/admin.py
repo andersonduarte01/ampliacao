@@ -5,8 +5,12 @@ from .models import Inscricao, Certificado, RequerimentoAmpliacao,Concurso, Info
 
 
 class InscricaoAdmin(admin.ModelAdmin):
-    model = Inscricao
-    list_display = ('professor', 'concluido', 'analisado')
+    list_display = ('professor', 'professor_telefone', 'concluido', 'analisado')
+
+    def professor_telefone(self, obj):
+        return obj.professor.telefone
+
+    professor_telefone.short_description = 'Telefone do Professor'  # Nome da coluna na lista
 
 
 admin.site.register(Inscricao, InscricaoAdmin)
