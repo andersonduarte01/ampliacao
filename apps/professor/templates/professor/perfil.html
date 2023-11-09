@@ -195,7 +195,7 @@
                 <div id="flush-collapseSix1" class="accordion-collapse collapse" aria-labelledby="flush-headingSix1" data-bs-parent="#accordionFlushExample">
                   <div class="accordion-body">
                     {% for horario in carga %}
-                     <code>{{horario.ano}} - {{horario.escola}}</code><br>
+                     <code>{%if horario.escola == None %} {% else %}{{horario.escola}}{% endif %}</code><br>
                     {% empty %}
                     {% endfor %}
                   </div>
