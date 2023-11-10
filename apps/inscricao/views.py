@@ -222,7 +222,7 @@ def requerimentoUp(request):
     formset = RequerimentoFormSet()
     if request.method == 'POST':
         formset = RequerimentoFormSet(request.POST, request.FILES, queryset=RequerimentoAmpliacao.objects.none())
-        contador =  1
+        contador = 1
         if formset.is_valid():
             for form in formset:
                 questao = form.save(commit=False)
