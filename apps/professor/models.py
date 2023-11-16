@@ -1,12 +1,22 @@
+import uuid
+
 from django.db import models
 from ..core.models import Usuario
 from cpf_field.models import CPFField
 from stdimage import StdImageField
+import os
 # Create your models here.
 
+def arquivo_foto(instance, filename):
+    if filename:
+        ext = filename.split('.')[-1]  # Obtém a extensão do arquivo original
+        random_name = str(uuid.uuid4())  # Gera um nome aleatório
+        new_filename = f"{random_name}.{ext}"  # Cria o novo nome do arquivo
+        return os.path.join('Imagens/perfil', new_filename)
+    return filename  # Retorna o nome original se for None
 
 class Professor(Usuario):
-    foto = StdImageField(upload_to='Imagens/perfil',
+    foto = StdImageField(upload_to=arquivo_foto,
                          variations={'thumbnail': {'width': 300, 'height': 400}})
     lotado = models.CharField(verbose_name='Escola', max_length=120, help_text='Escola em que esta lotado')
     data_nascimento = models.CharField(verbose_name='Data de Nascimento', null=True, blank=True, help_text='dd/mm/aaaa', max_length=12)

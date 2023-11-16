@@ -1,0 +1,49 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Inscrições Incompletas{% endblock %}
+{% block conteudo %}
+<main id="main">
+  <section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+      <div class="row">
+        <div class="col-lg-12 entries">
+          <article class="entry">
+            <h2 class="entry-title text-center">
+              <a href="#">Lista de Inscrições Incompletas</a>
+            </h2>
+
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Matrícula</th>
+                <th scope="col">Inscrito?</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for inscricao in inscricoes_incompletas %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{inscricao}}</td>
+                <td>{{inscricao.professor.matricula}}</td>
+                <td class="text-danger">
+                    <i class="bi bi-x"></i>
+                </td>
+              </tr>
+              {% empty %}
+              <p>Lista Vazia...</p>
+              {% endfor%}
+              </tbody>
+            </table>
+          </article><!-- End blog entry -->
+
+        </div><!-- End blog entries list -->
+
+      </div>
+
+    </div>
+  </section>
+</main>
+{% endblock %}

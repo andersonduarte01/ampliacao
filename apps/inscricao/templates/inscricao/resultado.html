@@ -3,6 +3,7 @@
 {% load django_bootstrap5 %}
 {% block titulo %}Analise da Inscrição{% endblock %}
 {% block conteudo %}
+{% if user.is_administrator %}
 <main id="main">
   <section id="blog" class="blog">
     <div class="container" data-aos="fade-up">
@@ -20,9 +21,9 @@
                 <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">RG:</span> {{professor.rg}}</li>
                 <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">CPF: </span>{{professor.cpf}}</li>
                 <li class="list-group-item fw-bold text-primary">Solicitação de Ampliação</li>
-                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">1º Opção: </span>{{professor.inscricao.opcao1}}</li>
-                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">2º Opção: </span>{{professor.inscricao.opcao2}}</li>
-                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">3º Opção: </span>{{professor.inscricao.opcao3}}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">1º Opção: </span>{% if professor.inscricao.opcao1 != None%}{{professor.inscricao.opcao1}}{% else %}{% endif %}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">2º Opção: </span>{% if professor.inscricao.opcao2 != None%}{{professor.inscricao.opcao2}}{% else %}{% endif %}</li>
+                <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">3º Opção: </span>{% if professor.inscricao.opcao3 != None%}{{professor.inscricao.opcao3}}{% else %}{% endif %}</li>
                 <li class="list-group-item fw-bold text-primary">Informações do Concurso</li>
                 <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Ano de Realização: </span>{{professor.inscricao.concurso.realizacao}}</li>
                 <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Cargo: </span>{{professor.inscricao.concurso.area}}</li>
@@ -35,14 +36,68 @@
 
           <article class="entry entry-single">
             <h2 class="entry-title text-center">
-               <a href="#">Detalhes da Inscrição</a>
+               <a href="#">Análise da Inscrição</a>
             </h2>
           </article>
           <article class="entry entry-single">
-            <h5>
-               <a href="{{professor.inscricao.nomeacao.url}}" target="_blank">Informações Iniciais da Inscrição</a>
-            </h5>
-            <p class="text-danger"><a href="#">Termo de Posse</a></p>
+            <h4 class="text-center">
+               Informações Iniciais da Inscrição
+            </h4>
+            <hr>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col" style="font-weight:600;" class="text-center">Nome Arquivo</th>
+                  <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Termo de Posse</td>
+                  <td class="text-center">
+                    <a href="{{professor.inscricao.nomeacao.url}}" target="_blank">
+                      <i class="bi bi-file-earmark-pdf"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Diploma</td>
+                  <td class="text-center">
+                    <a href="{{professor.inscricao.diploma.url}}" target="_blank">
+                      <i class="bi bi-file-earmark-pdf"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  {% if professor.inscricao.diploma1.url != None %}
+                  <td>Diploma 1 </td>
+                  <td class="text-center">
+                    <a href="{{professor.inscricao.diploma1.url}}" target="_blank">
+                      <i class="bi bi-file-earmark-pdf"></i>
+                    </a>
+                  </td>
+                  </a>
+                {% else %}
+                {% endif %}
+
+                </tr>
+                <tr>
+                  {% if professor.inscricao.diploma2.url != None %}
+                  <td>Diploma 2 </td>
+                  <td class="text-center">
+                    <a href="{{professor.inscricao.diploma2.url}}" target="_blank">
+                      <i class="bi bi-file-earmark-pdf"></i>
+                    </a>
+                  </td>
+                  </a>
+                {% else %}
+                {% endif %}
+
+                </tr>
+
+              </tbody>
+            </table>
+
           </article>
         </div><!-- End blog entries list -->
 
@@ -53,4 +108,6 @@
     </div>
   </section>
 </main>
+{% else %}
+{% endif %}
 {% endblock %}

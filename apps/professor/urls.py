@@ -14,4 +14,5 @@ urlpatterns = [
     path('lista_inscricoes/', views.InscricoesList.as_view(), name='insc_list'),
     path('inscricoes_pendentes/', views.InscricoesPendentes.as_view(), name='pend_list'),
     path('inscricoes_analisadas/', views.InscricoesAnalisadas.as_view(), name='concl_list'),
+    path('inscricoes_incompletas/', views.InscricoesIncompletas.as_view(), name='incompletas_list'),
 ]

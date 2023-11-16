@@ -81,6 +81,10 @@ class Inscricao(models.Model):
         return cls.objects.filter(concluido=True)
 
     @classmethod
+    def inscricoes_incompletas(cls):
+        return cls.objects.filter(concluido=False)
+
+    @classmethod
     def inscricoes_analisadas(cls):
         return cls.objects.filter(analisado=True)
 
@@ -139,5 +143,5 @@ class Resultado(models.Model):
         ('Negado', 'Negado')
     ]
     inscricao = models.OneToOneField(Inscricao, verbose_name='Resultado da Inscrição', on_delete=models.CASCADE)
-    resultado = models.CharField(verbose_name='Resultado', max_length=30, choices=RESULTADO, default='')
+    resultado = models.CharField(verbose_name='Resultado', max_length=30, choices=RESULTADO, default='Selecione')
     comentario = models.TextField(null=True, blank=True, verbose_name='Adicionar Comentário')

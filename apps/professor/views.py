@@ -140,3 +140,12 @@ class InscricoesAnalisadas(StaffRequiredMixin, ListView):
 
     def get_queryset(self):
         return Inscricao.inscricoes_analisadas()
+
+
+class InscricoesIncompletas(StaffRequiredMixin, ListView):
+    model = Inscricao
+    template_name = 'professor/inscricoes_incompletas.html'
+    context_object_name = 'inscricoes_incompletas'
+
+    def get_queryset(self):
+        return Inscricao.inscricoes_incompletas()
