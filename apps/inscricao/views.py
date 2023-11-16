@@ -113,12 +113,17 @@ def requerimentoTeste(request):
     if request.method == 'POST':
         formset = RequerimentoFormSet(request.POST, request.FILES)
         if formset.is_valid():
-            contador = 1
+            contador = 0
+            ano = 2021
             for form in formset:
                 if form.is_valid():
                     questao = form.save(commit=False)
                     questao.inscricao = inscricao
-                    questao.semestre = f'{contador}º Semestre - 2021'
+                    if contador != 0 and contador % 2 == 0:
+                        ano += 1
+                        questao.semestre = f'{contador + 1}º Semestre - {ano}'
+                    else:
+                        questao.semestre = f'{contador + 1}º Semestre - {ano}'
                     questao.anexo.name = generate_random_filename(questao.anexo.name)
                     questao.save()
                     contador += 1
@@ -222,12 +227,18 @@ def requerimentoUp(request):
     formset = RequerimentoFormSet()
     if request.method == 'POST':
         formset = RequerimentoFormSet(request.POST, request.FILES, queryset=RequerimentoAmpliacao.objects.none())
-        contador = 1
+        contador = 0
+        ano = 2021
         if formset.is_valid():
             for form in formset:
                 questao = form.save(commit=False)
                 questao.inscricao = inscricao
-                questao.semestre = f'{contador}º Semestre - 2021'
+                if contador != 0 and contador % 2 == 0:
+                    ano += 1
+                    questao.semestre = f'{contador + 1}º Semestre - {ano}'
+                else:
+                    questao.semestre = f'{contador + 1}º Semestre - {ano}'
+
                 questao.anexo.name = generate_random_filename(questao.anexo.name)
                 questao.save()
                 contador+=1

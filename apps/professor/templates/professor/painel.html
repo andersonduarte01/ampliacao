@@ -12,21 +12,24 @@
           <div class="sidebar">
               <ul class="list-group list-group-flush">
                 <li class="list-group-item text-center"><h5>Painel ADM</h5></li>
-                <li class="list-group-item list-group-item-action text-center">
+                <li class="list-group-item list-group-item-action">
                   <a href="{% url 'professor:insc_list' %}">
                     Todas as Inscrições
                   </a>
                 </li>
-                <li class="list-group-item list-group-item-action text-center">
+                <li class="list-group-item list-group-item-action">
                   <a href="{% url 'professor:pend_list' %}">Inscrições Aguardando</a>
                 </li>
-                <li class="list-group-item list-group-item-action text-center">
+                <li class="list-group-item list-group-item-action">
                   <a href="{% url 'professor:concl_list' %}">Inscrições Analisadas</a>
                 </li>
-                <li class="list-group-item list-group-item-action text-center">
+                <li class="list-group-item list-group-item-action">
+                  <a href="{% url 'professor:pend_list' %}">Inscrições Pendentes</a>
+                </li>
+                <li class="list-group-item list-group-item-action">
                   <a href="{% url 'professor:prof_list' %}">Professores cadastrados</a>
                 </li>
-                <li class="list-group-item list-group-item-action text-center">
+                <li class="list-group-item list-group-item-action">
                   <a href="#">Relatórios</a>
                 </li>
               </ul>
