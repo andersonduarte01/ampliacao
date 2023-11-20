@@ -136,6 +136,10 @@ class Certificado(models.Model):
                                    max_length=300, validators=[validate_pdf_extension], help_text='Permitido apenas arquivos em formato PDF.')
 
 
+    def __str__(self):
+        return self.curso
+
+
 class Resultado(models.Model):
     RESULTADO = [
         ('Selecione', 'Selecione'),
@@ -144,4 +148,4 @@ class Resultado(models.Model):
     ]
     inscricao = models.OneToOneField(Inscricao, verbose_name='Resultado da Inscrição', on_delete=models.CASCADE)
     resultado = models.CharField(verbose_name='Resultado', max_length=30, choices=RESULTADO, default='Selecione')
-    comentario = models.TextField(null=True, blank=True, verbose_name='Adicionar Comentário')
+    comentario = models.TextField(null=True, blank=True, verbose_name='Comentário')

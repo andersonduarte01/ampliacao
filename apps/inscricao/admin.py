@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Inscricao, Certificado, RequerimentoAmpliacao,Concurso, InformacoesAcademicas
+from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas, Resultado
 # Register your models here.
 
 
@@ -50,3 +50,5 @@ class InfoAcadAdmin(admin.ModelAdmin):
 
 
 admin.site.register(InformacoesAcademicas, InfoAcadAdmin)
+
+admin.site.register(Resultado)

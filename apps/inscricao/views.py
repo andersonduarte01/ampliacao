@@ -275,8 +275,31 @@ class AnalisarIncricao(StaffRequiredMixin, CreateView):
     template_name = 'inscricao/resultado.html'
     fields = ('resultado', 'comentario')
 
+    def get_success_url(self):
+        return reverse('professor:pend_list')
+
+    def form_valid(self, form):
+        resultado = form.save(commit=False)
+        professor = Professor.objects.get(pk=self.kwargs['pk'])
+        inscricao = Inscricao.objects.get(professor=professor)
+        resultado.inscricao = inscricao
+        inscricao.analisado = True
+        inscricao.save()
+
+        print(f'Resulta da Inscrição: {resultado.resultado}')
+        return super().form_valid(form)
+
     def get_context_data(self, **kwargs):
         contexto = super().get_context_data(**kwargs)
         professor = Professor.objects.get(pk=self.kwargs['pk'])
+        inscricao = Inscricao.objects.get(professor=professor)
+        certificados = Certificado.objects.filter(inscricao=inscricao)
+        ampliacoes = RequerimentoAmpliacao.objects.filter(inscricao=inscricao)
+        cursos = []
+        for certificado in certificados:
+            if certificado.curso != '':
+                cursos.append(certificado)
         contexto['professor'] = professor
+        contexto['certificados'] = cursos
+        contexto['ampliacoes'] = ampliacoes
         return contexto

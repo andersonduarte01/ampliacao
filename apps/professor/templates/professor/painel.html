@@ -6,28 +6,28 @@
 <main id="main">
   <section id="blog" class="blog">
     <div class="container" data-aos="fade-up">
-
       <div class="row">
         <div class="col-lg-4">
           <div class="sidebar">
               <ul class="list-group list-group-flush">
                 <li class="list-group-item text-center"><h5>Painel ADM</h5></li>
-                <li class="list-group-item list-group-item-action">
-                  <a href="{% url 'professor:insc_list' %}">
-                    Todas as Inscrições
-                  </a>
-                </li>
+
                 <li class="list-group-item list-group-item-action">
                   <a href="{% url 'professor:pend_list' %}">Inscrições Aguardando</a>
                 </li>
                 <li class="list-group-item list-group-item-action">
-                  <a href="{% url 'professor:concl_list' %}">Inscrições Analisadas</a>
+                  <a href="{% url 'professor:concl_list' %}">Inscrições Aprovadas</a>
+                </li>
+                <li class="list-group-item list-group-item-action">
+                  <a href="{% url 'professor:insc_list' %}">
+                    Inscrições Negadas
+                  </a>
                 </li>
                 <li class="list-group-item list-group-item-action">
                   <a href="{% url 'professor:incompletas_list' %}">Inscrições Incompletas</a>
                 </li>
                 <li class="list-group-item list-group-item-action">
-                  <a href="{% url 'professor:prof_list' %}">Professores cadastrados</a>
+                  <a href="{% url 'professor:prof_list' %}">Professores Cadastrados</a>
                 </li>
                 <li class="list-group-item list-group-item-action">
                   <a href="#">Relatórios</a>

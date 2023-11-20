@@ -1,5 +1,4 @@
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from ..inscricao.concluir import analisarInscricao
@@ -117,11 +116,16 @@ class ProfessoresList(StaffRequiredMixin, ListView):
 
 class InscricoesList(StaffRequiredMixin, ListView):
     model = Inscricao
-    template_name = 'professor/lista_inscricoes.html'
+    template_name = 'professor/lista_inscricoes_negadas.html'
     context_object_name = 'inscricoes'
 
     def get_queryset(self):
-        return Inscricao.inscricoes_concluidas()
+        insc = Inscricao.inscricoes_analisadas()
+        inscricoes = []
+        for inscricao in insc:
+            if inscricao.resultado.resultado == 'Negado':
+                inscricoes.append(inscricao)
+        return inscricoes
 
 
 class InscricoesPendentes(StaffRequiredMixin, ListView):
@@ -135,11 +139,16 @@ class InscricoesPendentes(StaffRequiredMixin, ListView):
 
 class InscricoesAnalisadas(StaffRequiredMixin, ListView):
     model = Inscricao
-    template_name = 'professor/inscricoes_analisadas.html'
+    template_name = 'professor/inscricoes_analisadas_aprovadas.html'
     context_object_name = 'inscricoes_analisadas'
 
     def get_queryset(self):
-        return Inscricao.inscricoes_analisadas()
+        insc = Inscricao.inscricoes_analisadas()
+        inscricoes = []
+        for inscricao in insc:
+            if inscricao.resultado.resultado == 'Aprovado':
+                inscricoes.append(inscricao)
+        return inscricoes
 
 
 class InscricoesIncompletas(StaffRequiredMixin, ListView):
