@@ -296,12 +296,18 @@ class AnalisarIncricao(StaffRequiredMixin, CreateView):
         certificados = Certificado.objects.filter(inscricao=inscricao)
         ampliacoes = RequerimentoAmpliacao.objects.filter(inscricao=inscricao)
         cursos = []
+        ampliacoes_list = []
         for certificado in certificados:
             if certificado.curso != '':
                 cursos.append(certificado)
+
+        for amp in ampliacoes:
+            if amp.escola != None:
+                ampliacoes_list.append(amp)
+
         contexto['professor'] = professor
         contexto['certificados'] = cursos
-        contexto['ampliacoes'] = ampliacoes
+        contexto['ampliacoes'] = ampliacoes_list
         return contexto
 
 
@@ -325,7 +331,8 @@ def update_status(request, pk):
         inscricao_form = InscricaoCheck(request.POST, instance=inscricao)
         informacoes_form = InformacoesCheck(request.POST, instance=informacoes_acad)
         requerimento_formset = RequerimentoFormSet(request.POST, instance=inscricao, prefix='requerimento')
-
+        print(f'Certificado: {certificado_formset.is_valid()}')
+        print(certificado_formset)
         if (
                 informacoes_form.is_valid() and
                 inscricao_form.is_valid()) and certificado_formset.is_valid() and requerimento_formset.is_valid():
@@ -349,6 +356,7 @@ def update_status(request, pk):
         requerimento_formset = RequerimentoFormSet(instance=inscricao, prefix='requerimento')
         inscricao_form = InscricaoCheck(instance=inscricao)
         informacoes_form = InformacoesCheck(instance=informacoes_acad)
+        print(certificado_formset.is_valid())
     # Renderiza a página com os formulários
     return render(request, 'inscricao/temp_analise.html', {
         'certificado_formset': certificado_formset,
@@ -356,6 +364,7 @@ def update_status(request, pk):
         'informacoes_form': informacoes_form,
         'requerimento_formset': requerimento_formset,
         'professor': professor,
-        'certificados': cursos,
+        'certificados': certificado_formset,
         'ampliacoes': ampliacoes,
+        'certificados': certificados,
     })

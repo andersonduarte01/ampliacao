@@ -17,4 +17,5 @@ urlpatterns = [
     path('adicionar/<int:pk>/termo_de_compromisso/', views.TermoUP.as_view(), name='up_termo'),
     ## analises
     path('<int:pk>/resultado_da_analise', views.update_status, name='up_teste'),
+    path('professor/<int:pk>/finalizar_analise', views.AnalisarIncricao.as_view(), name='finalizar'),
 ]

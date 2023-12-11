@@ -30,6 +30,13 @@
               <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Data de Posse: </span>{{professor.inscricao.concurso.posse}}</li>
             </ul>
           </div><!-- End sidebar -->
+          <div class="sidebar">
+              <h5 class="text-center fw-bold text-primary">
+                <div class="d-grid gap-2">
+                  <a href="{% url 'inscricao:finalizar' pk=professor.pk %}" class="btn btn-outline-primary">Finalizar Análise</a>
+                </div>
+              </h5>
+          </div><!-- End sidebar -->
         </div>
         <div class="col-lg-8 entries">
             <form method="post">
@@ -163,9 +170,11 @@
                     <tr>
                     <td>{{certificado}}</td>
                     <td class="text-center">
-                      <a href="{{certificado.certificado.url}}" target="_blank" class="text-danger">
+                      {% if certificado.certificado %}
+                        <a href="{{certificado.certificado.url}}" target="_blank" class="text-danger">
                         <i class="bi bi-file-earmark-pdf"></i>
                       </a>
+                      {% endif %}
                     </td>
                     <td class="text-center">
                       {% if forloop.counter0 == 0 %}

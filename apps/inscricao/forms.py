@@ -1,7 +1,7 @@
 from django import forms
-from django.forms import FileInput, TextInput, Select
+from django.forms import FileInput, TextInput, Select, Textarea
 
-from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas
+from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas, Resultado
 
 
 class CertificadoForm(forms.ModelForm):

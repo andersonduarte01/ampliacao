@@ -1,7 +1,7 @@
 {% extends 'base1.html' %}
 {% load static %}
 {% load django_bootstrap5 %}
-{% block titulo %}Analise da Inscrição{% endblock %}
+{% block titulo %}Finalizar Análise{% endblock %}
 {% block conteudo %}
 {% if user.is_administrator %}
 <main id="main">
@@ -31,24 +31,35 @@
             </ul>
           </div><!-- End sidebar -->
 
-          <div class="sidebar">
-              <h3 class="text-center fw-bold text-primary">Analise da Inscrição</h3>
-            <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-                    <div class="progress">
-                      <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div><br>
-                    <button type="submit" class="btn btn-outline-primary">Finalizar</button>
-                    </form>
-          </div><!-- End sidebar -->
-
         </div>
         <div class="col-lg-8 entries">
 
           <article class="entry entry-single">
             <h2 class="entry-title text-center">
-              <a href="#">Análise da Inscrição</a>
+              <a href="#">Resultado da Análise</a>
+            </h2>
+            <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <br>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="d-grid gap-2">
+                          <button type="submit" class="btn btn-outline-primary">Finalizar</button>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="d-grid gap-2">
+                          <a href="{% url 'inscricao:up_teste' pk=professor.pk %}" class="btn btn-outline-danger">Voltar</a>
+                        </div>
+                      </div>
+                    </div>
+                    </form>
+          </article>
+
+          <article class="entry entry-single">
+            <h2 class="entry-title text-center">
+              <a href="#">Resumo</a>
             </h2>
           </article>
           <article class="entry entry-single">
@@ -59,8 +70,9 @@
             <table class="table table-hover">
               <thead>
               <tr>
-                <th scope="col" style="font-weight:600;" class="text-center">Nome</th>
+                <th scope="col" style="font-weight:600;">Nome</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
+                <th scope="col" style="font-weight:600;" class="text-center">Visto</th>
               </tr>
               </thead>
               <tbody>
@@ -71,6 +83,13 @@
                     <i class="bi bi-file-earmark-pdf"></i>
                   </a>
                 </td>
+                <td class="text-center">
+                  {% if professor.inscricao.visto %}
+                    <i class="bi bi-check-all text-primary"></i>
+                  {% else %}
+                    <i class="bi bi-x text-danger"></i>
+                  {% endif %}
+                </td>
               </tr>
               <tr>
                 <td>Diploma</td>
@@ -78,6 +97,13 @@
                   <a href="{{professor.inscricao.diploma.url}}" target="_blank" class="text-danger">
                     <i class="bi bi-file-earmark-pdf"></i>
                   </a>
+                </td>
+                <td class="text-center">
+                  {% if professor.inscricao.visto %}
+                    <i class="bi bi-check-all text-primary"></i>
+                  {% else %}
+                    <i class="bi bi-x text-danger"></i>
+                  {% endif %}
                 </td>
               </tr>
               <tr>
@@ -119,8 +145,9 @@
             <table class="table table-hover">
               <thead>
               <tr>
-                <th scope="col" style="font-weight:600;" class="text-center">Nome</th>
+                <th scope="col" style="font-weight:600;">Nome</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
+                <th scope="col" style="font-weight:600;" class="text-center">Visto</th>
               </tr>
               </thead>
               <tbody>
@@ -129,14 +156,22 @@
                 <td class="text-center">
                   {{professor.inscricao.informacoes_academicas.area_formacao}}
                 </td>
+                <td></td>
               </tr>
               {% if  professor.inscricao.informacoes_academicas.area_especializacao != None%}
               <tr>
                 <td> {{professor.inscricao.informacoes_academicas.area_especializacao}}</td>
                 <td class="text-center">
-                  <a href="{{professor.inscricao.informacoes_academicas.anexo.url}}" target="_blank" class="text-danger">
+                  <a href="{% if professor.inscricao.informacoes_academicas.anexoChecar %}{{professor.inscricao.informacoes_academicas.anexo.url}}{% endif %}" target="_blank" class="text-danger">
                     <i class="bi bi-file-earmark-pdf"></i>
                   </a>
+                </td>
+                <td class="text-center">
+                  {% if professor.inscricao.informacoes_academicas.info_visto %}
+                    <i class="bi bi-check-all text-primary"></i>
+                  {% else %}
+                    <i class="bi bi-x text-danger"></i>
+                  {% endif %}
                 </td>
               </tr>
               {% else %}
@@ -153,8 +188,9 @@
             <table class="table table-hover">
               <thead>
               <tr>
-                <th scope="col" style="font-weight:600;" class="text-center">Curso</th>
+                <th scope="col" style="font-weight:600;">Curso</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
+                <th scope="col" style="font-weight:600;" class="text-center">Visto</th>
               </tr>
               </thead>
               <tbody>
@@ -165,6 +201,13 @@
                   <a href="{{certificado.certificado.url}}" target="_blank" class="text-danger">
                     <i class="bi bi-file-earmark-pdf"></i>
                   </a>
+                </td>
+                <td class="text-center">
+                  {% if certificado.certificado_visto %}
+                    <i class="bi bi-check-all text-primary"></i>
+                  {% else %}
+                    <i class="bi bi-x text-danger"></i>
+                  {% endif %}
                 </td>
               </tr>
               {% empty %}
@@ -183,16 +226,17 @@
             <table class="table table-hover">
               <thead>
               <tr>
-                <th scope="col" style="font-weight:600;" class="text-center">Ampliacao</th>
+                <th scope="col" style="font-weight:600;">Semestre</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Escola</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Cargo</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
+                <th scope="col" style="font-weight:600;" class="text-center">Visto</th>
               </tr>
               </thead>
               <tbody>
               {% for ampliacao in ampliacoes %}
                 <tr>
-                <td>{{ampliacao.semestre}}</td>
+                <td>{{ampliacao.semestre|slice:":2"}} - {{ampliacao.semestre|slice:"-4:"}}</td>
                 <td>{%if ampliacao.escola != None %}{{ampliacao.escola}}{%endif%}</td>
                 <td>{%if ampliacao.cargo != None %}{{ampliacao.cargo}}{%endif%}</td>
                 <td class="text-center">
@@ -201,6 +245,13 @@
                     <i class="bi bi-file-earmark-pdf"></i>
                   </a>
                     {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if ampliacao.requerimento_visto %}
+                    <i class="bi bi-check-all text-primary"></i>
+                  {% else %}
+                    <i class="bi bi-x text-danger"></i>
+                  {% endif %}
                 </td>
               </tr>
               {% empty %}
