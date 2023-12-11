@@ -152,7 +152,7 @@ class Certificado(models.Model):
 
 class Resultado(models.Model):
     RESULTADO = [
-        ('Selecione', 'Selecione'),
+        ('', 'Selecione'),
         ('Aprovado', 'Aprovado'),
         ('Negado', 'Negado')
     ]

@@ -151,6 +151,20 @@ class InscricoesAnalisadas(StaffRequiredMixin, ListView):
         return inscricoes
 
 
+class InscricoesOutros(StaffRequiredMixin, ListView):
+    model = Inscricao
+    template_name = 'professor/inscricoes_outros.html'
+    context_object_name = 'inscricoes_analisadas'
+
+    def get_queryset(self):
+        insc = Inscricao.inscricoes_analisadas()
+        inscricoes = []
+        for inscricao in insc:
+            if inscricao.resultado.resultado == 'Selecione':
+                inscricoes.append(inscricao)
+        return inscricoes
+
+
 class InscricoesIncompletas(StaffRequiredMixin, ListView):
     model = Inscricao
     template_name = 'professor/inscricoes_incompletas.html'
