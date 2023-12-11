@@ -1,0 +1,279 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Analise da Inscrição{% endblock %}
+{% block conteudo %}
+{% if user.is_administrator %}
+<main id="main">
+  <section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="sidebar">
+            {% if  professor.foto %}
+            <img class="img-thumbnail" src="{{professor.foto.url}}">
+            {% else %}
+            <img class="img-thumbnail" src="{% static 'assets/img/icone.jpg'%}">
+            {% endif %}
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-center">{{professor.nome}}</li>
+              <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">RG:</span> {{professor.rg}}</li>
+              <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">CPF: </span>{{professor.cpf}}</li>
+              <li class="list-group-item fw-bold text-primary">Solicitação de Ampliação</li>
+              <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">1º Opção: </span>{% if professor.inscricao.opcao1 != None%}{{professor.inscricao.opcao1}}{% else %}{% endif %}</li>
+              <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">2º Opção: </span>{% if professor.inscricao.opcao2 != None%}{{professor.inscricao.opcao2}}{% else %}{% endif %}</li>
+              <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">3º Opção: </span>{% if professor.inscricao.opcao3 != None%}{{professor.inscricao.opcao3}}{% else %}{% endif %}</li>
+              <li class="list-group-item fw-bold text-primary">Informações do Concurso</li>
+              <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Ano de Realização: </span>{{professor.inscricao.concurso.realizacao}}</li>
+              <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Cargo: </span>{{professor.inscricao.concurso.area}}</li>
+              <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Data de Posse: </span>{{professor.inscricao.concurso.posse}}</li>
+            </ul>
+          </div><!-- End sidebar -->
+        </div>
+        <div class="col-lg-8 entries">
+            <form method="post">
+              {% csrf_token %}
+              <article class="entry entry-single">
+                <h4 class="text-center">
+                  Informações Iniciais da Inscrição
+                </h4>
+                <hr>
+                  <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col" style="font-weight:600;" >Documento</th>
+                    <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
+                    <th scope="col" style="font-weight:600;" class="text-center">Visto</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>Termo de Posse</td>
+                    <td class="text-center">
+                      <a href="{{professor.inscricao.nomeacao.url}}" target="_blank" class="text-danger">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                      </a>
+                    </td>
+                    <td class="text-center">
+                    {{ inscricao_form.as_p }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Diploma</td>
+                    <td class="text-center">
+                      <a href="{{professor.inscricao.diploma.url}}" target="_blank" class="text-danger">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                      </a>
+                    </td>
+                    <td class="text-center">
+                    {{ inscricao_form.as_p }}
+                    </td>
+                  </tr>
+                  <tr>
+                    {% if professor.inscricao.diploma1.url != None %}
+                    <td>Diploma 1 </td>
+                    <td class="text-center">
+                      <a href="{{professor.inscricao.diploma1.url}}" target="_blank" class="text-danger">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                      </a>
+                    </td>
+                    </a>
+                    {% else %}
+                    {% endif %}
+
+                  </tr>
+                  <tr>
+                    {% if professor.inscricao.diploma2.url != None %}
+                    <td>Diploma 2 </td>
+                    <td class="text-center">
+                      <a href="{{professor.inscricao.diploma2.url}}" target="_blank" class="text-danger">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                      </a>
+                    </td>
+                    </a>
+                    {% else %}
+                    {% endif %}
+
+                  </tr>
+                  </tbody>
+                </table>
+              </article>
+
+              <article class="entry entry-single">
+                <h4 class="text-center">
+                  Informações Acadêmicas
+                </h4>
+                <hr>
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col" style="font-weight:600;"></th>
+                    <th scope="col" style="font-weight:600;">Nome</th>
+                    <th scope="col" style="font-weight:600;">Visualizar</th>
+                    <th scope="col" style="font-weight:600;">Visto</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>Formação</td>
+                    <td>
+                      {{professor.inscricao.informacoes_academicas.area_formacao}}
+                    </td>
+                    <td></td>
+                  </tr>
+
+                  {% if  professor.inscricao.informacoes_academicas.area_especializacao != None%}
+                  <tr>
+                    <td>Formação (Espec.)</td>
+                    <td> {{professor.inscricao.informacoes_academicas.area_especializacao}}</td>
+                    <td class="text-center">
+
+                      <a href="{% if professor.inscricao.informacoes_academicas.anexoChecar %}{{professor.inscricao.informacoes_academicas.anexo.url}}{% endif %}" target="_blank" class="text-danger">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                      </a>
+                    </td>
+                    <td>{{ informacoes_form.as_p }}</td>
+                  </tr>
+                  {% else %}
+                  {%endif%}
+                  </tbody>
+                </table>
+              </article>
+
+              <article class="entry entry-single">
+                <h4 class="text-center">
+                  Cursos de Aperfeiçoamento
+                </h4>
+                <hr>
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col" style="font-weight:600;">Curso</th>
+                    <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
+                    <th scope="col" style="font-weight:600;" class="text-center">Visto</th>
+                  </tr>
+                  </thead>
+
+                  <tbody>
+                  {{ certificado_formset.management_form }}
+
+                  {% for certificado in certificados %}
+
+                    <tr>
+                    <td>{{certificado}}</td>
+                    <td class="text-center">
+                      <a href="{{certificado.certificado.url}}" target="_blank" class="text-danger">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                      </a>
+                    </td>
+                    <td class="text-center">
+                      {% if forloop.counter0 == 0 %}
+                        {{ certificado_formset.0.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 1 %}
+                        {{ certificado_formset.1.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 2 %}
+                        {{ certificado_formset.2.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 3 %}
+                        {{ certificado_formset.3.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 4 %}
+                        {{ certificado_formset.4.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 5 %}
+                        {{ certificado_formset.5.as_p}}
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <p>...</p>
+                  {% endfor %}
+
+                  </tbody>
+                </table>
+              </article>
+
+              <article class="entry entry-single">
+                <h4 class="text-center">
+                  Ampliações de Carga Horária Anteriores
+                </h4>
+                <hr>
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col" style="font-weight:600;">Semestre</th>
+                    <th scope="col" style="font-weight:600;">Escola</th>
+                    <th scope="col" style="font-weight:600;" >Amp. Temporária</th>
+                    <th scope="col" style="font-weight:600;">Cargo</th>
+                    <th scope="col" style="font-weight:600;">Visualizar</th>
+                    <th scope="col" style="font-weight:600;">Visto</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {{ requerimento_formset.management_form }}
+                  {% for ampliacao in ampliacoes %}
+                    <tr>
+                    <td>{{ampliacao.semestre|slice:":2"}} - {{ampliacao.semestre|slice:"-4:"}}</td>
+                    <td>{%if ampliacao.escola != None %}{{ampliacao.escola}}{%endif%}</td>
+                    <td>{%if ampliacao.opcao != None and ampliacao.opcao != 'Selecione aqui' %}{{ampliacao.opcao}}{%endif%}</td>
+                    <td>{%if ampliacao.cargo != None %}{{ampliacao.cargo}}{%endif%}</td>
+                    <td class="text-center">
+                        {% if ampliacao.anexo %}
+                            <a href="{{ampliacao.anexo.url}}" target="_blank" class="text-danger">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                      </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                      {% if forloop.counter0 == 0 %}
+                        {{ requerimento_formset.0.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 1 %}
+                        {{ requerimento_formset.1.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 2 %}
+                        {{ requerimento_formset.2.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 3 %}
+                        {{ requerimento_formset.3.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 4 %}
+                        {{ requerimento_formset.4.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 5 %}
+                        {{ requerimento_formset.5.as_p}}
+                      {% endif %}
+                      {% if forloop.counter0 == 6 %}
+                        {{ requerimento_formset.6.as_p}}
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <p>...</p>
+                  {% endfor %}
+
+                  </tbody>
+                </table>
+              </article>
+
+              <article class="entry entry-single">
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-outline-primary">Salvar Progresso</button>
+                </div>
+              </article>
+
+
+            </form>
+        </div><!-- End blog entries list -->
+
+        ><!-- End blog sidebar -->
+      </div>
+    </div>
+  </section>
+</main>
+{% else %}
+{% endif %}
+{% endblock %}

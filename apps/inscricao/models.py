@@ -19,13 +19,20 @@ class InformacoesAcademicas(models.Model):
                              help_text='Anexar arquivo referente a Especialização e/ou Habilitação',
                              max_length=300, validators=[validate_pdf_extension])
     status = models.BooleanField(verbose_name='Concluido', default=False)
+    info_visto = models.BooleanField(verbose_name='Check', default=False)
 
+    def anexoChecar(self):
+        if self.anexo:
+            return True
+        else:
+            return False
 
 class Concurso(models.Model):
     realizacao = models.CharField(verbose_name='Ano de realização do Concurso', max_length=12)
     area = models.CharField(verbose_name='Cargo do Concurso', max_length=80)
     posse = models.CharField(verbose_name='Data da posse do Concurso', max_length=20, help_text='dia/mes/ano')
     status = models.BooleanField(verbose_name='Concluido', default=False)
+    visto = models.BooleanField(verbose_name='Check', default=False)
 
 
 class Inscricao(models.Model):
@@ -75,6 +82,7 @@ class Inscricao(models.Model):
     termo = models.BooleanField(verbose_name='Sim, eu aceito os termos', default=False)
     concluido = models.BooleanField(verbose_name='Concluido', default=False)
     analisado = models.BooleanField(verbose_name='Analisado', default=False)
+    visto = models.BooleanField(verbose_name='Check', default=False)
 
     @classmethod
     def inscricoes_concluidas(cls):
@@ -124,9 +132,11 @@ class RequerimentoAmpliacao(models.Model):
                                 max_length=300, validators=[validate_pdf_extension])
     opcao = models.CharField(verbose_name='Ampliação Temporária', choices=RESPOSTA, default='', max_length=200)
     status = models.BooleanField(verbose_name='Concluido', default=False)
+    requerimento_visto = models.BooleanField(verbose_name='Check', default=False)
 
     def __str__(self):
         return f'{self.inscricao} - {self.semestre}'
+
 
 
 class Certificado(models.Model):
@@ -134,7 +144,7 @@ class Certificado(models.Model):
     curso = models.CharField(verbose_name='Curso', max_length=120)
     certificado = models.FileField(upload_to='docs/certificado', verbose_name='Certificado',
                                    max_length=300, validators=[validate_pdf_extension], help_text='Permitido apenas arquivos em formato PDF.')
-
+    certificado_visto = models.BooleanField(verbose_name='Check', default=False)
 
     def __str__(self):
         return self.curso

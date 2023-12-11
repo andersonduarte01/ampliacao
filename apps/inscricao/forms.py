@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import FileInput, TextInput, Select
 
-from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso
+from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas
 
 
 class CertificadoForm(forms.ModelForm):
@@ -46,3 +46,46 @@ class ConcursoForm(forms.ModelForm):
         fields = ['realizacao', 'area', 'posse']
 
 
+class CertificadoForm(forms.ModelForm):
+    class Meta:
+        model = Certificado
+        fields = ['certificado_visto', ]
+        labels = {
+            'certificado_visto': '',  # Define a label como uma string vazia para remover o rótulo
+        }
+
+
+class ConcursoCheck(forms.ModelForm):
+    class Meta:
+        model = Concurso
+        fields = ['visto', ]
+        labels = {
+            'visto': '',  # Define a label como uma string vazia para remover o rótulo
+        }
+
+
+class RequerimentoAmpliacaoCheck(forms.ModelForm):
+    class Meta:
+        model = RequerimentoAmpliacao
+        fields = ['requerimento_visto', ]
+        labels = {
+            'requerimento_visto': '',  # Define a label como uma string vazia para remover o rótulo
+        }
+
+
+class InscricaoCheck(forms.ModelForm):
+    class Meta:
+        model = Inscricao
+        fields = ['visto', ]
+        labels = {
+            'visto': '',  # Define a label como uma string vazia para remover o rótulo
+        }
+
+
+class InformacoesCheck(forms.ModelForm):
+    class Meta:
+        model = InformacoesAcademicas
+        fields = ['info_visto', ]
+        labels = {
+            'info_visto': '',  # Define a label como uma string vazia para remover o rótulo
+        }

@@ -2,13 +2,14 @@ import uuid
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import formset_factory, modelformset_factory
+from django.forms import formset_factory, modelformset_factory, inlineformset_factory
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, CreateView, UpdateView
 
-from .forms import CertificadoForm, RequerimentoForm, ConcursoForm
+from .forms import CertificadoForm, RequerimentoForm, ConcursoForm, InscricaoCheck, RequerimentoAmpliacaoCheck, \
+    InformacoesCheck
 from .models import Inscricao, InformacoesAcademicas, Concurso, RequerimentoAmpliacao, Certificado, Resultado
 from ..professor.models import Professor
 from ..inscricao.decoradores import StaffRequiredMixin
@@ -66,7 +67,7 @@ class InfoAcademicas(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class Concurso(LoginRequiredMixin, CreateView):
+class Concurso1(LoginRequiredMixin, CreateView):
     model = Concurso
     fields = ('realizacao', 'area', 'posse')
     template_name = 'inscricao/concurso.html'
@@ -286,7 +287,6 @@ class AnalisarIncricao(StaffRequiredMixin, CreateView):
         inscricao.analisado = True
         inscricao.save()
 
-        print(f'Resulta da Inscrição: {resultado.resultado}')
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -303,3 +303,59 @@ class AnalisarIncricao(StaffRequiredMixin, CreateView):
         contexto['certificados'] = cursos
         contexto['ampliacoes'] = ampliacoes
         return contexto
+
+
+def update_status(request, pk):
+    professor = get_object_or_404(Professor, pk=pk)
+    inscricao = get_object_or_404(Inscricao, professor=professor)
+    informacoes_acad = get_object_or_404(InformacoesAcademicas, id=inscricao.informacoes_academicas.id)
+    certificados = get_list_or_404(Certificado, inscricao=inscricao)
+    ampliacoes = get_list_or_404(RequerimentoAmpliacao, inscricao=inscricao)
+    cursos = []
+    for certificado in certificados:
+        if certificado.curso != '':
+            cursos.append(certificado)
+
+    CertificadoFormSet = inlineformset_factory(Inscricao, Certificado, form=CertificadoForm, extra=0, can_delete=False)
+    RequerimentoFormSet = inlineformset_factory(Inscricao, RequerimentoAmpliacao, form=RequerimentoAmpliacaoCheck, extra=0, can_delete=False)
+
+    if request.method == 'POST':
+        # Atualiza o status de cada instância com base nos dados do formulário
+        certificado_formset = CertificadoFormSet(request.POST, instance=inscricao, prefix='certificado')
+        inscricao_form = InscricaoCheck(request.POST, instance=inscricao)
+        informacoes_form = InformacoesCheck(request.POST, instance=informacoes_acad)
+        requerimento_formset = RequerimentoFormSet(request.POST, instance=inscricao, prefix='requerimento')
+
+        if (
+                informacoes_form.is_valid() and
+                inscricao_form.is_valid()) and certificado_formset.is_valid() and requerimento_formset.is_valid():
+
+            certificado_formset.save()
+            requerimento_formset.save()
+            ifo = inscricao_form.save(commit=False)
+            ifo1 = inscricao_form.cleaned_data['visto']
+            ifo.check = ifo1
+            ifo.save()
+            info = informacoes_form.save(commit=False)
+            info1 = informacoes_form.cleaned_data['info_visto']
+            info.info_visto = info1
+            info.save()
+            url = reverse_lazy('inscricao:up_teste', kwargs={'pk': professor.pk})
+            return HttpResponseRedirect(url)
+
+    else:
+        # Se não for uma solicitação POST, exibe os formulários preenchidos com os dados existentes
+        certificado_formset = CertificadoFormSet(instance=inscricao, prefix='certificado')
+        requerimento_formset = RequerimentoFormSet(instance=inscricao, prefix='requerimento')
+        inscricao_form = InscricaoCheck(instance=inscricao)
+        informacoes_form = InformacoesCheck(instance=informacoes_acad)
+    # Renderiza a página com os formulários
+    return render(request, 'inscricao/temp_analise.html', {
+        'certificado_formset': certificado_formset,
+        'inscricao_form': inscricao_form,
+        'informacoes_form': informacoes_form,
+        'requerimento_formset': requerimento_formset,
+        'professor': professor,
+        'certificados': cursos,
+        'ampliacoes': ampliacoes,
+    })
