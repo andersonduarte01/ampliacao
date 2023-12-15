@@ -53,14 +53,22 @@ class CertificadoForm(forms.ModelForm):
         labels = {
             'certificado_visto': '',  # Define a label como uma string vazia para remover o rótulo
         }
+        widgets = {
+            'certificado_visto': Select(
+                attrs={'class': 'form-control'}),
+        }
 
 
 class ConcursoCheck(forms.ModelForm):
     class Meta:
         model = Concurso
-        fields = ['visto', ]
+        fields = ['concurso_visto', ]
         labels = {
-            'visto': '',  # Define a label como uma string vazia para remover o rótulo
+            'concurso_visto': '',  # Define a label como uma string vazia para remover o rótulo
+        }
+        widgets = {
+            'concurso_visto': Select(
+                attrs={'class': 'form-control'}),
         }
 
 
@@ -71,6 +79,10 @@ class RequerimentoAmpliacaoCheck(forms.ModelForm):
         labels = {
             'requerimento_visto': '',  # Define a label como uma string vazia para remover o rótulo
         }
+        widgets = {
+            'requerimento_visto': Select(
+                attrs={'class': 'form-control'}),
+        }
 
 
 class InscricaoCheck(forms.ModelForm):
@@ -80,6 +92,14 @@ class InscricaoCheck(forms.ModelForm):
         labels = {
             'visto': '',  # Define a label como uma string vazia para remover o rótulo
         }
+        widgets = {
+            'visto': Select(
+                attrs={'class': 'form-control'}),
+        }
+        widgets = {
+            'visto': Select(
+                attrs={'class': 'form-control'}),
+        }
 
 
 class InformacoesCheck(forms.ModelForm):
@@ -88,4 +108,20 @@ class InformacoesCheck(forms.ModelForm):
         fields = ['info_visto', ]
         labels = {
             'info_visto': '',  # Define a label como uma string vazia para remover o rótulo
+        }
+        widgets = {
+            'info_visto': Select(
+                attrs={'class': 'form-control'}),
+        }
+
+
+class ResultadoForm(forms.ModelForm):
+    class Meta:
+        model = Resultado
+        fields = ['resultado', 'comentario']
+        widgets = {
+            'resultado': Select(
+                attrs={'class': 'form-control'}),
+            'comentario': Textarea(
+                attrs={'class': 'form-control'}),
         }

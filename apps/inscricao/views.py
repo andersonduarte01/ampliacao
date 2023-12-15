@@ -9,7 +9,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, CreateView, UpdateView
 
 from .forms import CertificadoForm, RequerimentoForm, ConcursoForm, InscricaoCheck, RequerimentoAmpliacaoCheck, \
-    InformacoesCheck
+    InformacoesCheck, ResultadoForm
 from .models import Inscricao, InformacoesAcademicas, Concurso, RequerimentoAmpliacao, Certificado, Resultado
 from ..professor.models import Professor
 from ..inscricao.decoradores import StaffRequiredMixin
@@ -271,49 +271,84 @@ class TermoUP(LoginRequiredMixin, UpdateView):
 
 ## classes de analise
 
-class AnalisarIncricao(StaffRequiredMixin, CreateView):
-    model = Resultado
-    template_name = 'inscricao/resultado.html'
-    fields = ('resultado', 'comentario')
+def analisarIncricao(request, pk):
+    professor = Professor.objects.get(pk=pk)
+    inscricao = Inscricao.objects.get(professor=professor)
+    certificados = Certificado.objects.filter(inscricao=inscricao)
+    ampliacoes = RequerimentoAmpliacao.objects.filter(inscricao=inscricao)
+    results = None
 
-    def get_success_url(self):
-        return reverse('professor:pend_list')
+    try:
+        results = Resultado.objects.get(inscricao=inscricao)
+    except:
+        print('')
 
-    def form_valid(self, form):
-        resultado = form.save(commit=False)
-        professor = Professor.objects.get(pk=self.kwargs['pk'])
-        inscricao = Inscricao.objects.get(professor=professor)
-        resultado.inscricao = inscricao
-        inscricao.analisado = True
-        inscricao.save()
+    cursos = []
+    ampliacoes_list = []
+    for certificado in certificados:
+        if certificado.curso != '':
+            cursos.append(certificado)
 
-        return super().form_valid(form)
+    for amp in ampliacoes:
+        if amp.escola != None:
+            ampliacoes_list.append(amp)
 
-    def get_context_data(self, **kwargs):
-        contexto = super().get_context_data(**kwargs)
-        professor = Professor.objects.get(pk=self.kwargs['pk'])
-        inscricao = Inscricao.objects.get(professor=professor)
-        certificados = Certificado.objects.filter(inscricao=inscricao)
-        ampliacoes = RequerimentoAmpliacao.objects.filter(inscricao=inscricao)
-        cursos = []
-        ampliacoes_list = []
-        for certificado in certificados:
-            if certificado.curso != '':
-                cursos.append(certificado)
+    if request.method == 'POST':
+        form = ResultadoForm(request.POST)
+        print(form)
+        if form.is_valid():
+            resultado, created = Resultado.objects.get_or_create(inscricao=inscricao)
+            resultado.resultado = form.cleaned_data['resultado']
+            resultado.comentario = form.cleaned_data['comentario']
+            resultado.save()
 
-        for amp in ampliacoes:
-            if amp.escola != None:
-                ampliacoes_list.append(amp)
+            inscricao.analisado = True
+            inscricao.save()
 
-        contexto['professor'] = professor
-        contexto['certificados'] = cursos
-        contexto['ampliacoes'] = ampliacoes_list
-        return contexto
+            url = reverse_lazy('professor:administrador')
+            return HttpResponseRedirect(url)
+    else:
+        form = ResultadoForm(instance=results)
+
+    contexto = {'form': form, 'professor': professor, 'certificados': cursos, 'ampliacoes': ampliacoes_list}
+    return render(request, 'inscricao/resultado.html', contexto)
+
+
+def resumo(request, pk):
+    professor = Professor.objects.get(pk=pk)
+    inscricao = Inscricao.objects.get(professor=professor)
+    certificados = Certificado.objects.filter(inscricao=inscricao)
+    ampliacoes = RequerimentoAmpliacao.objects.filter(inscricao=inscricao)
+    results = None
+
+    try:
+        results = Resultado.objects.get(inscricao=inscricao)
+    except:
+        print('')
+
+    cursos = []
+    ampliacoes_list = []
+    for certificado in certificados:
+        if certificado.curso != '':
+            cursos.append(certificado)
+
+    for amp in ampliacoes:
+        if amp.escola != None:
+            ampliacoes_list.append(amp)
+
+    contexto = {'professor': professor, 'certificados': cursos, 'ampliacoes': ampliacoes_list, 'resultado': results}
+    return render(request, 'inscricao/resumo.html', contexto)
 
 
 def update_status(request, pk):
     professor = get_object_or_404(Professor, pk=pk)
     inscricao = get_object_or_404(Inscricao, professor=professor)
+    resultado = None
+    try:
+        resultado = Resultado.objects.get(inscricao=inscricao)
+    except:
+        print('Error')
+
     informacoes_acad = get_object_or_404(InformacoesAcademicas, id=inscricao.informacoes_academicas.id)
     certificados = get_list_or_404(Certificado, inscricao=inscricao)
     ampliacoes = get_list_or_404(RequerimentoAmpliacao, inscricao=inscricao)
@@ -331,22 +366,26 @@ def update_status(request, pk):
         inscricao_form = InscricaoCheck(request.POST, instance=inscricao)
         informacoes_form = InformacoesCheck(request.POST, instance=informacoes_acad)
         requerimento_formset = RequerimentoFormSet(request.POST, instance=inscricao, prefix='requerimento')
-        print(f'Certificado: {certificado_formset.is_valid()}')
-        print(certificado_formset)
-        if (
-                informacoes_form.is_valid() and
-                inscricao_form.is_valid()) and certificado_formset.is_valid() and requerimento_formset.is_valid():
+
+        print(f'Informações: {informacoes_form}')
+
+        if (informacoes_form.is_valid() and inscricao_form.is_valid() and
+                certificado_formset.is_valid() and requerimento_formset.is_valid()):
 
             certificado_formset.save()
             requerimento_formset.save()
             ifo = inscricao_form.save(commit=False)
             ifo1 = inscricao_form.cleaned_data['visto']
+            print(f'Valor: {ifo1}')
             ifo.check = ifo1
             ifo.save()
             info = informacoes_form.save(commit=False)
-            info1 = informacoes_form.cleaned_data['info_visto']
-            info.info_visto = info1
-            info.save()
+
+            if informacoes_form.cleaned_data['info_visto']:
+                info1 = informacoes_form.cleaned_data['info_visto']
+                info.info_visto = info1
+                info.save()
+
             url = reverse_lazy('inscricao:up_teste', kwargs={'pk': professor.pk})
             return HttpResponseRedirect(url)
 
@@ -356,15 +395,14 @@ def update_status(request, pk):
         requerimento_formset = RequerimentoFormSet(instance=inscricao, prefix='requerimento')
         inscricao_form = InscricaoCheck(instance=inscricao)
         informacoes_form = InformacoesCheck(instance=informacoes_acad)
-        print(certificado_formset.is_valid())
     # Renderiza a página com os formulários
-    return render(request, 'inscricao/temp_analise.html', {
+    return render(request, 'inscricao/analise.html', {
         'certificado_formset': certificado_formset,
         'inscricao_form': inscricao_form,
         'informacoes_form': informacoes_form,
         'requerimento_formset': requerimento_formset,
         'professor': professor,
-        'certificados': certificado_formset,
         'ampliacoes': ampliacoes,
         'certificados': certificados,
+        'resultado': resultado,
     })

@@ -20,6 +20,7 @@
                 <th scope="col">Nome</th>
                 <th scope="col">Matrícula</th>
                 <th scope="col">Analisado?</th>
+                <th scope="col">Ver</th>
               </tr>
               </thead>
               <tbody>
@@ -36,6 +37,11 @@
                   {% else %}
                   <i class="bi bi-x"></i>
                   {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'inscricao:resumo' pk=inscricao.professor.pk %}">
+                    <i class="bi bi-eye"></i>
+                  </a>
                 </td>
               </tr>
               {% empty %}

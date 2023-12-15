@@ -8,6 +8,11 @@ class InformacoesAcademicas(models.Model):
         ('SIM', 'SIM'),
         ('NÃO', 'NÃO'),
     ]
+    RESULTADO = [
+        ('0', 'Selecione'),
+        ('1', 'Aprovado'),
+        ('2', 'Não Aprovado')
+    ]
     area_formacao = models.CharField(verbose_name='Formação', max_length=180,
                                      help_text='Caso tenha marcado sim em graduação', null=True, blank=True)
     especializacao = models.CharField(verbose_name='Curso de Especialização (Pós Graduação Lato sensu)',
@@ -19,7 +24,7 @@ class InformacoesAcademicas(models.Model):
                              help_text='Anexar arquivo referente a Especialização e/ou Habilitação',
                              max_length=300, validators=[validate_pdf_extension])
     status = models.BooleanField(verbose_name='Concluido', default=False)
-    info_visto = models.BooleanField(verbose_name='Check', default=False)
+    info_visto = models.CharField(verbose_name='Check', max_length=15, choices=RESULTADO, default='Selecione')
 
     def anexoChecar(self):
         if self.anexo:
@@ -28,11 +33,16 @@ class InformacoesAcademicas(models.Model):
             return False
 
 class Concurso(models.Model):
+    RESULTADO = [
+        ('0', 'Selecione'),
+        ('1', 'Aprovado'),
+        ('2', 'Não Aprovado')
+    ]
     realizacao = models.CharField(verbose_name='Ano de realização do Concurso', max_length=12)
     area = models.CharField(verbose_name='Cargo do Concurso', max_length=80)
     posse = models.CharField(verbose_name='Data da posse do Concurso', max_length=20, help_text='dia/mes/ano')
     status = models.BooleanField(verbose_name='Concluido', default=False)
-    visto = models.BooleanField(verbose_name='Check', default=False)
+    concurso_visto = models.CharField(verbose_name='Check', max_length=15, choices=RESULTADO, default='Selecione')
 
 
 class Inscricao(models.Model):
@@ -63,6 +73,13 @@ class Inscricao(models.Model):
         ('Educação Física', 'Educação Física'),
         ('Professor Polivalente', 'Professor Polivalente')
     ]
+
+    RESULTADO = [
+        ('0', 'Selecione'),
+        ('1', 'Aprovado'),
+        ('2', 'Não Aprovado')
+    ]
+
     professor = models.OneToOneField(Professor, on_delete=models.CASCADE)
     opcao1 = models.CharField(verbose_name='1º Opção para Ampliação', max_length=60, choices=RPT1, default='')
     opcao2 = models.CharField(verbose_name='2º Opção para Ampliação', max_length=60, choices=RPT2, default='', null=True, blank=True)
@@ -82,7 +99,7 @@ class Inscricao(models.Model):
     termo = models.BooleanField(verbose_name='Sim, eu aceito os termos', default=False)
     concluido = models.BooleanField(verbose_name='Concluido', default=False)
     analisado = models.BooleanField(verbose_name='Analisado', default=False)
-    visto = models.BooleanField(verbose_name='Check', default=False)
+    visto = models.CharField(verbose_name='Check', max_length=15, choices=RESULTADO, default='Selecione')
 
     @classmethod
     def inscricoes_concluidas(cls):
@@ -124,6 +141,11 @@ class RequerimentoAmpliacao(models.Model):
         ('Exercendo cargo comissionado na esfera pública municipal',
          'Exercendo cargo comissionado na esfera pública municipal'),
     ]
+    RESULTADO1 = [
+        ('0', 'Selecione'),
+        ('1', 'Aprovado'),
+        ('2', 'Não Aprovado')
+    ]
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     escola = models.CharField(verbose_name='Escola', max_length=120, null=True, blank=True)
     semestre = models.CharField(verbose_name='Semestre', max_length=120, null=True, blank=True)
@@ -132,7 +154,7 @@ class RequerimentoAmpliacao(models.Model):
                                 max_length=300, validators=[validate_pdf_extension])
     opcao = models.CharField(verbose_name='Ampliação Temporária', choices=RESPOSTA, default='', max_length=200)
     status = models.BooleanField(verbose_name='Concluido', default=False)
-    requerimento_visto = models.BooleanField(verbose_name='Check', default=False)
+    requerimento_visto = models.CharField(verbose_name='Check', max_length=15, choices=RESULTADO1, default='Selecione')
 
     def __str__(self):
         return f'{self.inscricao} - {self.semestre}'
@@ -140,11 +162,16 @@ class RequerimentoAmpliacao(models.Model):
 
 
 class Certificado(models.Model):
+    RESULTADO = [
+        ('0', 'Selecione'),
+        ('1', 'Aprovado'),
+        ('2', 'Não Aprovado')
+    ]
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     curso = models.CharField(verbose_name='Curso', max_length=120)
     certificado = models.FileField(upload_to='docs/certificado', verbose_name='Certificado',
                                    max_length=300, validators=[validate_pdf_extension], help_text='Permitido apenas arquivos em formato PDF.')
-    certificado_visto = models.BooleanField(verbose_name='Check', default=False)
+    certificado_visto = models.CharField(verbose_name='Check', max_length=15, choices=RESULTADO, default='Selecione')
 
     def __str__(self):
         return self.curso

@@ -1,7 +1,7 @@
 {% extends 'base1.html' %}
 {% load static %}
 {% load django_bootstrap5 %}
-{% block titulo %}Finalizar Análise{% endblock %}
+{% block titulo %}Resumo Análise{% endblock %}
 {% block conteudo %}
 {% if user.is_administrator %}
 <main id="main">
@@ -33,34 +33,24 @@
 
         </div>
         <div class="col-lg-8 entries">
-
           <article class="entry entry-single">
-            <h2 class="entry-title text-center">
-              <a href="#">Resultado da Análise</a>
-            </h2>
-            <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-                    <br>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Situação: {{resultado.resultado}}</h5>
+                <p class="card-text">{{resultado.comentario}}</p>
+                <hr>
+                  <div class="d-grid gap-2 justify-content-md-end">
                     <div class="row">
-                      <div class="col-md-6">
-                        <div class="d-grid gap-2">
-                          <button type="submit" class="btn btn-outline-primary">Finalizar</button>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="d-grid gap-2">
-                          <a href="{% url 'inscricao:up_teste' pk=professor.pk %}" class="btn btn-outline-danger">Voltar</a>
-                        </div>
-                      </div>
+                    <div class="col-md-6">
+                      <a href="{% url 'inscricao:up_teste' pk=professor.pk %}" class="btn btn-outline-success btn-sm">Editar</a>
                     </div>
-                    </form>
-          </article>
-
-          <article class="entry entry-single">
-            <h2 class="entry-title text-center">
-              <a href="#">Resumo</a>
-            </h2>
+                    <div class="col-md-6">
+                      <a href="#" class="btn btn-outline-danger btn-sm">Voltar</a>
+                    </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
           </article>
           <article class="entry entry-single">
             <h4 class="text-center">

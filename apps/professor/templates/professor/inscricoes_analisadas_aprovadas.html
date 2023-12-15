@@ -29,7 +29,7 @@
                 <td>{{inscricao}}</td>
                 <td>{{inscricao.professor.matricula}}</td>
                 <td class="text-danger">
-                  <a href="#">
+                  <a href="{% url 'inscricao:resumo' pk=inscricao.professor.pk %}">
                     <i class="bi bi-eye"></i>
                   </a>
                 </td>

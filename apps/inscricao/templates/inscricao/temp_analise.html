@@ -31,11 +31,26 @@
             </ul>
           </div><!-- End sidebar -->
           <div class="sidebar">
+            {% if resultado %}
+            <h4 class="text-center text-primary">Análise</h4>
+            <hr>
+            <div class="row">
+            <p><span class="fw-bold">Resultado:</span> {{resultado.resultado}}</p>
+            <p><span class="fw-bold">Comentário:</span> {{resultado.comentario}}</p>
+            </div>
+            <hr>
+              <h5 class="text-center fw-bold text-primary">
+                <div class="d-grid gap-2">
+                  <a href="{% url 'inscricao:finalizar' pk=professor.pk %}" class="btn btn-outline-primary">Refazer Análise</a>
+                </div>
+              </h5>
+            {% else %}
               <h5 class="text-center fw-bold text-primary">
                 <div class="d-grid gap-2">
                   <a href="{% url 'inscricao:finalizar' pk=professor.pk %}" class="btn btn-outline-primary">Finalizar Análise</a>
                 </div>
               </h5>
+            {% endif %}
           </div><!-- End sidebar -->
         </div>
         <div class="col-lg-8 entries">
@@ -51,6 +66,7 @@
                   <tr>
                     <th scope="col" style="font-weight:600;" >Documento</th>
                     <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
+                    <th scope="col" style="font-weight:600;" class="text-center">Editar</th>
                     <th scope="col" style="font-weight:600;" class="text-center">Visto</th>
                   </tr>
                   </thead>
@@ -61,6 +77,31 @@
                       <a href="{{professor.inscricao.nomeacao.url}}" target="_blank" class="text-danger">
                         <i class="bi bi-file-earmark-pdf"></i>
                       </a>
+                    </td>
+                    <td class="text-center">
+                      <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Launch demo modal
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
                     </td>
                     <td class="text-center">
                     {{ inscricao_form.as_p }}
