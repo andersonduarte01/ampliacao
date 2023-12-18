@@ -45,7 +45,7 @@
                       <a href="{% url 'inscricao:up_teste' pk=professor.pk %}" class="btn btn-outline-success btn-sm">Editar</a>
                     </div>
                     <div class="col-md-6">
-                      <a href="#" class="btn btn-outline-danger btn-sm">Voltar</a>
+                      <a href="{% url 'professor:administrador' %}" class="btn btn-outline-danger btn-sm">Voltar</a>
                     </div>
                     </div>
                   </div>
@@ -74,12 +74,25 @@
                   </a>
                 </td>
                 <td class="text-center">
-                  {% if professor.inscricao.visto %}
-                    <i class="bi bi-check-all text-primary"></i>
-                  {% else %}
-                    <i class="bi bi-x text-danger"></i>
-                  {% endif %}
-                </td>
+                    {% if professor.inscricao.visto == '0' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pin-angle" viewBox="0 0 16 16">
+                      <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146zm.122 2.112v-.002zm0-.002v.002a.5.5 0 0 1-.122.51L6.293 6.878a.5.5 0 0 1-.511.12H5.78l-.014-.004a4.507 4.507 0 0 0-.288-.076 4.922 4.922 0 0 0-.765-.116c-.422-.028-.836.008-1.175.15l5.51 5.509c.141-.34.177-.753.149-1.175a4.924 4.924 0 0 0-.192-1.054l-.004-.013v-.001a.5.5 0 0 1 .12-.512l3.536-3.535a.5.5 0 0 1 .532-.115l.096.022c.087.017.208.034.344.034.114 0 .23-.011.343-.04L9.927 2.028c-.029.113-.04.23-.04.343a1.779 1.779 0 0 0 .062.46z"/>
+                    </svg>
+                    {% elif professor.inscricao.visto == '1' %}
+                    <span class="text-success">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                        <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                        <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
+                      </svg>
+                    </span>
+                    {% elif professor.inscricao.visto == '2' %}
+                      <span class="text-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                      </span>
+                    {% endif %}
+                    </td>
               </tr>
               <tr>
                 <td>Diploma</td>
@@ -89,12 +102,25 @@
                   </a>
                 </td>
                 <td class="text-center">
-                  {% if professor.inscricao.visto %}
-                    <i class="bi bi-check-all text-primary"></i>
-                  {% else %}
-                    <i class="bi bi-x text-danger"></i>
-                  {% endif %}
-                </td>
+                    {% if professor.inscricao.visto == '0' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pin-angle" viewBox="0 0 16 16">
+                      <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146zm.122 2.112v-.002zm0-.002v.002a.5.5 0 0 1-.122.51L6.293 6.878a.5.5 0 0 1-.511.12H5.78l-.014-.004a4.507 4.507 0 0 0-.288-.076 4.922 4.922 0 0 0-.765-.116c-.422-.028-.836.008-1.175.15l5.51 5.509c.141-.34.177-.753.149-1.175a4.924 4.924 0 0 0-.192-1.054l-.004-.013v-.001a.5.5 0 0 1 .12-.512l3.536-3.535a.5.5 0 0 1 .532-.115l.096.022c.087.017.208.034.344.034.114 0 .23-.011.343-.04L9.927 2.028c-.029.113-.04.23-.04.343a1.779 1.779 0 0 0 .062.46z"/>
+                    </svg>
+                    {% elif professor.inscricao.visto == '1' %}
+                    <span class="text-success">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                        <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                        <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
+                      </svg>
+                    </span>
+                    {% elif professor.inscricao.visto == '2' %}
+                      <span class="text-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                      </span>
+                    {% endif %}
+                    </td>
               </tr>
               <tr>
                 {% if professor.inscricao.diploma1.url != None %}
@@ -104,7 +130,6 @@
                     <i class="bi bi-file-earmark-pdf"></i>
                   </a>
                 </td>
-                </a>
                 {% else %}
                 {% endif %}
 
@@ -117,7 +142,6 @@
                     <i class="bi bi-file-earmark-pdf"></i>
                   </a>
                 </td>
-                </a>
                 {% else %}
                 {% endif %}
 
@@ -135,21 +159,24 @@
             <table class="table table-hover">
               <thead>
               <tr>
+                <th scope="col" style="font-weight:600;"></th>
                 <th scope="col" style="font-weight:600;">Nome</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
-                <th scope="col" style="font-weight:600;" class="text-center">Visto</th>
+                <th scope="col" style="font-weight:600;" class="text-center">Aprovado</th>
               </tr>
               </thead>
               <tbody>
               <tr>
                 <td>Formação</td>
-                <td class="text-center">
+                <td>
                   {{professor.inscricao.informacoes_academicas.area_formacao}}
                 </td>
+                <td></td>
                 <td></td>
               </tr>
               {% if  professor.inscricao.informacoes_academicas.area_especializacao != None%}
               <tr>
+                <td>Formação(Espec)</td>
                 <td> {{professor.inscricao.informacoes_academicas.area_especializacao}}</td>
                 <td class="text-center">
                   <a href="{% if professor.inscricao.informacoes_academicas.anexoChecar %}{{professor.inscricao.informacoes_academicas.anexo.url}}{% endif %}" target="_blank" class="text-danger">
@@ -157,12 +184,25 @@
                   </a>
                 </td>
                 <td class="text-center">
-                  {% if professor.inscricao.informacoes_academicas.info_visto %}
-                    <i class="bi bi-check-all text-primary"></i>
-                  {% else %}
-                    <i class="bi bi-x text-danger"></i>
-                  {% endif %}
-                </td>
+                    {% if professor.inscricao.informacoes_academicas.info_visto == '0' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pin-angle" viewBox="0 0 16 16">
+                      <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146zm.122 2.112v-.002zm0-.002v.002a.5.5 0 0 1-.122.51L6.293 6.878a.5.5 0 0 1-.511.12H5.78l-.014-.004a4.507 4.507 0 0 0-.288-.076 4.922 4.922 0 0 0-.765-.116c-.422-.028-.836.008-1.175.15l5.51 5.509c.141-.34.177-.753.149-1.175a4.924 4.924 0 0 0-.192-1.054l-.004-.013v-.001a.5.5 0 0 1 .12-.512l3.536-3.535a.5.5 0 0 1 .532-.115l.096.022c.087.017.208.034.344.034.114 0 .23-.011.343-.04L9.927 2.028c-.029.113-.04.23-.04.343a1.779 1.779 0 0 0 .062.46z"/>
+                    </svg>
+                    {% elif professor.inscricao.informacoes_academicas.info_visto == '1' %}
+                    <span class="text-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                      <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                      <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
+                    </svg>
+                    </span>
+                      {% elif professor.inscricao.informacoes_academicas.info_visto == '2' %}
+                      <span class="text-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                      </span>
+                    {% endif %}
+                    </td>
               </tr>
               {% else %}
               {%endif%}
@@ -180,7 +220,7 @@
               <tr>
                 <th scope="col" style="font-weight:600;">Curso</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
-                <th scope="col" style="font-weight:600;" class="text-center">Visto</th>
+                <th scope="col" style="font-weight:600;" class="text-center">Aprovado</th>
               </tr>
               </thead>
               <tbody>
@@ -193,12 +233,25 @@
                   </a>
                 </td>
                 <td class="text-center">
-                  {% if certificado.certificado_visto %}
-                    <i class="bi bi-check-all text-primary"></i>
-                  {% else %}
-                    <i class="bi bi-x text-danger"></i>
-                  {% endif %}
-                </td>
+                    {% if certificado.certificado_visto == '0' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pin-angle" viewBox="0 0 16 16">
+                      <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146zm.122 2.112v-.002zm0-.002v.002a.5.5 0 0 1-.122.51L6.293 6.878a.5.5 0 0 1-.511.12H5.78l-.014-.004a4.507 4.507 0 0 0-.288-.076 4.922 4.922 0 0 0-.765-.116c-.422-.028-.836.008-1.175.15l5.51 5.509c.141-.34.177-.753.149-1.175a4.924 4.924 0 0 0-.192-1.054l-.004-.013v-.001a.5.5 0 0 1 .12-.512l3.536-3.535a.5.5 0 0 1 .532-.115l.096.022c.087.017.208.034.344.034.114 0 .23-.011.343-.04L9.927 2.028c-.029.113-.04.23-.04.343a1.779 1.779 0 0 0 .062.46z"/>
+                    </svg>
+                    {% elif certificado.certificado_visto == '1' %}
+                    <span class="text-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                      <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                      <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
+                    </svg>
+                    </span>
+                      {% elif certificado.certificado_visto == '2' %}
+                      <span class="text-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                      </span>
+                    {% endif %}
+                    </td>
               </tr>
               {% empty %}
               <p>...</p>
@@ -220,7 +273,7 @@
                 <th scope="col" style="font-weight:600;" class="text-center">Escola</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Cargo</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
-                <th scope="col" style="font-weight:600;" class="text-center">Visto</th>
+                <th scope="col" style="font-weight:600;" class="text-center">Aprovado</th>
               </tr>
               </thead>
               <tbody>
@@ -237,12 +290,25 @@
                     {% endif %}
                 </td>
                 <td class="text-center">
-                    {% if ampliacao.requerimento_visto %}
-                    <i class="bi bi-check-all text-primary"></i>
-                  {% else %}
-                    <i class="bi bi-x text-danger"></i>
-                  {% endif %}
-                </td>
+                    {% if ampliacao.requerimento_visto == '0' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pin-angle" viewBox="0 0 16 16">
+                      <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146zm.122 2.112v-.002zm0-.002v.002a.5.5 0 0 1-.122.51L6.293 6.878a.5.5 0 0 1-.511.12H5.78l-.014-.004a4.507 4.507 0 0 0-.288-.076 4.922 4.922 0 0 0-.765-.116c-.422-.028-.836.008-1.175.15l5.51 5.509c.141-.34.177-.753.149-1.175a4.924 4.924 0 0 0-.192-1.054l-.004-.013v-.001a.5.5 0 0 1 .12-.512l3.536-3.535a.5.5 0 0 1 .532-.115l.096.022c.087.017.208.034.344.034.114 0 .23-.011.343-.04L9.927 2.028c-.029.113-.04.23-.04.343a1.779 1.779 0 0 0 .062.46z"/>
+                    </svg>
+                    {% elif ampliacao.requerimento_visto == '1' %}
+                    <span class="text-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                      <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                      <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
+                    </svg>
+                    </span>
+                      {% elif ampliacao.requerimento_visto == '2' %}
+                      <span class="text-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                      </span>
+                    {% endif %}
+                    </td>
               </tr>
               {% empty %}
               <p>...</p>
