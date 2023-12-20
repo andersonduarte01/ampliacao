@@ -30,6 +30,13 @@
               <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Data de Posse: </span>{{professor.inscricao.concurso.posse}}</li>
             </ul>
           </div><!-- End sidebar -->
+          <div class="sidebar">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" style="font-size: 0.9rem;">
+                <a href="{% url 'inscricao:relatorio' pk=professor.pk %}" target="_blank">Gerar Relatório</a>
+              </li>
+            </ul>
+          </div><!-- End sidebar -->
 
         </div>
         <div class="col-lg-8 entries">

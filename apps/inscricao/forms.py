@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import FileInput, TextInput, Select, Textarea
 
-from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas, Resultado
+from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas, Resultado, AmpliacaoComplemento
 
 
 class CertificadoForm(forms.ModelForm):
@@ -125,3 +125,20 @@ class ResultadoForm(forms.ModelForm):
             'comentario': Textarea(
                 attrs={'class': 'form-control'}),
         }
+
+
+class ComplementoForm(forms.ModelForm):
+    class Meta:
+        model = AmpliacaoComplemento
+        fields = ['escola', 'opcao', 'cargo', 'anexo']
+        widgets = {
+            'opcao': Select(
+                attrs={'class': 'form-control'}),
+            'escola': TextInput(
+                attrs={'class': 'form-control', 'style': 'margin-bottom: 10px;'}),
+            'anexo': FileInput(
+                attrs={'class': 'form-control', 'style': 'margin-bottom: 10px; margin-top: 15px;'}),
+            'cargo': TextInput(
+                attrs={'class': 'form-control', 'style': 'margin-bottom: 10px; margin-top: 15px;'}),
+        }
+

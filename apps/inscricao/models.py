@@ -160,7 +160,6 @@ class RequerimentoAmpliacao(models.Model):
         return f'{self.inscricao} - {self.semestre}'
 
 
-
 class Certificado(models.Model):
     RESULTADO = [
         ('0', 'Selecione'),
@@ -186,3 +185,38 @@ class Resultado(models.Model):
     inscricao = models.OneToOneField(Inscricao, verbose_name='Resultado da Inscrição', on_delete=models.CASCADE)
     resultado = models.CharField(verbose_name='Resultado', max_length=30, choices=RESULTADO, default='Selecione')
     comentario = models.TextField(null=True, blank=True, verbose_name='Comentário')
+
+
+class AmpliacaoComplemento(models.Model):
+    RESPOSTA = [
+        ('Selecione aqui', 'Selecione aqui'),
+        ('Não mpliado', 'Não ampliado'),
+        ('Lotado em regência em sala de aula', 'Lotado em regência em sala de aula'),
+        ('Lotado em regência em ambientes educacionais de aprendizagem '
+         '(Laboratório de informática, Biblioteca, Secretaria Escolar e/outros ambientes )',
+         'Lotado em regência em ambientes educacionais de aprendizagem '
+         '(Laboratório de informática, Biblioteca, Secretaria Escolar e/outros ambientes )'),
+        ('Afastado das funções por problemas de saúde', 'Afastado das funções por problemas de saúde'),
+        ('Cedido a outras repartições', 'Cedido a outras repartições'),
+        ('Em licença prêmio e/ou sem remuneração', 'Em licença prêmio e/ou sem remuneração'),
+        ('Afastado das funções por outros motivos', 'Afastado das funções por outros motivos'),
+        ('Exercendo cargo comissionado na esfera pública municipal',
+         'Exercendo cargo comissionado na esfera pública municipal'),
+    ]
+    RESULTADO1 = [
+        ('0', 'Selecione'),
+        ('1', 'Aprovado'),
+        ('2', 'Não Aprovado')
+    ]
+    inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
+    escola = models.CharField(verbose_name='Escola', max_length=120, null=True, blank=True)
+    semestre = models.CharField(verbose_name='Semestre', max_length=120, null=True, blank=True)
+    cargo = models.CharField(verbose_name='Qual o cargo?', max_length=120, null=True, blank=True)
+    anexo = models.FileField(upload_to='docs/nomeacao', verbose_name='Anexar ficha financeira', null=True, blank=True,
+                                max_length=300, validators=[validate_pdf_extension])
+    opcao = models.CharField(verbose_name='Ampliação Temporária', choices=RESPOSTA, default='', max_length=200)
+    status = models.BooleanField(verbose_name='Concluido', default=False)
+    requerimento_visto = models.CharField(verbose_name='Check', max_length=15, choices=RESULTADO1, default='Selecione')
+
+    def __str__(self):
+        return f'{self.inscricao}'

@@ -1,0 +1,108 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Ampliações de Carga Horária Anteriores{% endblock %}
+{% block estilo %}
+
+{% endblock %}
+{% block conteudo %}
+<main id="main">
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+
+                <div class="col-lg-12 entries">
+
+                    <article class="entry">
+
+                        <h2 class="entry-title text-center">
+                            Ampliações de Carga Horária Anteriores
+                        </h2>
+
+                        <div class="entry-content">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <h3 class="text-primary">1º Semestre - 2021</h3>
+                                <br>
+                                {{ formset.management_form }}
+                                {{ formset.forms.0.as_p }}
+                                <br>
+                                <h3 class="text-primary">2º Semestre - 2021</h3>
+                                <br>
+                                <!-- Formulário 2 -->
+                                {{ formset.forms.1.as_p }}
+                                <br>
+                                <h3 class="text-primary">3º Semestre - 2022</h3>
+                                <br>
+                                <!-- Formulário 3 -->
+                                {{ formset.forms.2.as_p }}
+                                <br>
+                                <h3 class="text-primary">4º Semestre - 2022</h3>
+                                <br>
+                                <!-- Formulário 4 -->
+                                {{ formset.forms.3.as_p }}
+                                <br>
+                                <h3 class="text-primary">5º Semestre - 2023</h3>
+                                <br>
+                                <!-- Formulário 5 -->
+                                {{ formset.forms.4.as_p }}
+                                <br>
+                                <h3 class="text-primary">6º Semestre - 2023</h3>
+                                <br>
+                                <!-- Formulário 6 -->
+                                {{ formset.forms.5.as_p }}
+
+                                <!-- Progresso e botão de envio -->
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">Progresso da inscrição 80%</div>
+                                </div>
+                                <hr>
+                                <button type="submit" class="btn btn-outline-primary">Salvar e Continuar</button>
+                            </form>
+
+                        </div>
+
+                    </article><!-- End blog entry -->
+
+                </div><!-- End blog entries list -->
+
+            </div>
+
+        </div>
+    </section>
+</main>
+{% endblock %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Função para mostrar/ocultar o campo "cargo" quando a seleção muda
+        function toggleCargoField() {
+            // Obtém o ID do campo de opção selecionado
+            var selectedOptionId = $(this).attr('id');
+
+            // Remove o prefixo "id_form-" para obter o índice
+            var index = selectedOptionId.replace('id_form-', '').replace('-opcao', '');
+
+            // ID do campo de cargo correspondente
+            var cargoId = "id_form-" + index + "-cargo";
+
+            // Exibir o campo de cargo se a opção for "Exercendo cargo comissionado na esfera pública municipal"
+            if ($(this).val() === "Exercendo cargo comissionado na esfera pública municipal") {
+                $("#" + cargoId).show();
+            } else {
+                $("#" + cargoId).hide();
+            }
+        }
+
+        // Vincula a função a todos os campos de seleção de opção
+        $("[id^='id_form-'][id$='-opcao']").change(toggleCargoField);
+
+        // Inicialmente, oculte todos os campos de cargo
+        $("[id^='id_form-'][id$='-cargo']").hide();
+    });
+</script>
+
+
+{% endblock %}

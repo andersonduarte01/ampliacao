@@ -12,6 +12,7 @@ urlpatterns = [
     path('certificados/', views.certificadoTeste, name='certificado'),
     path('adicionar/certificados/', views.certificadoUp, name='up_certificado'),
     path('requerimento/', views.requerimentoTeste, name='requerimento'),
+    path('complemento/', views.requerimentoComplemento, name='complemento'),
     path('adicionar/requerimento/', views.requerimentoUp, name='up_requerimento'),
     path('<int:pk>/termo_de_compromisso/', views.Termo.as_view(), name='termo'),
     path('adicionar/<int:pk>/termo_de_compromisso/', views.TermoUP.as_view(), name='up_termo'),
@@ -19,4 +20,5 @@ urlpatterns = [
     path('<int:pk>/resultado_da_analise', views.update_status, name='up_teste'),
     path('professor/<int:pk>/finalizar_analise', views.analisarIncricao, name='finalizar'),
     path('professor/<int:pk>/resumo', views.resumo, name='resumo'),
+    path('relatorio/<int:pk>/inscricao', views.RelatorioPDF.as_view(), name='relatorio'),
 ]
