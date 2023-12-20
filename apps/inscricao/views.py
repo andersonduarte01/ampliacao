@@ -475,9 +475,17 @@ class RelatorioPDF(View):
 
 @login_required
 def requerimentoComplemento(request):
-    RequerimentoFormSet = formset_factory(ComplementoForm, extra=6, max_num=6)
     professor = Professor.objects.get(id=request.user.id)
     inscricao = Inscricao.objects.get(professor=professor)
+    adendo = False
+    try:
+        anteriores = AmpliacaoComplemento.objects.filter(inscricao=inscricao)
+        if len(anteriores) > 0:
+            adendo = True
+    except:
+        adendo = False
+
+    RequerimentoFormSet = formset_factory(ComplementoForm, extra=6, max_num=6)
     complemento = None
     try:
         complemento = AmpliacaoComplemento.objects.filter(inscricao=inscricao)
@@ -485,17 +493,18 @@ def requerimentoComplemento(request):
         print('ERROR')
 
     if request.method == 'POST':
-        formset = RequerimentoFormSet(request.POST, request.FILES, instance=inscricao)
+        formset = RequerimentoFormSet(request.POST, request.FILES)
         if formset.is_valid():
             for form in formset:
                 if form.is_valid():
                     questao = form.save(commit=False)
                     questao.inscricao = inscricao
+                    questao.anexo.name = generate_random_filename(questao.anexo.name)
                     questao.save()
 
-            url = reverse_lazy('inscricao:termo', kwargs={'pk': inscricao.pk})
+            url = reverse_lazy('professor:detalhes')
             return HttpResponseRedirect(url)
     else:
-        formset = RequerimentoFormSet(instance=inscricao)
+        formset = RequerimentoFormSet()
 
-    return render(request, 'inscricao/requerimentoComplemento.html', {'formset': formset})
+    return render(request, 'inscricao/requerimentoComplemento.html', {'formset': formset, 'adendo': adendo})

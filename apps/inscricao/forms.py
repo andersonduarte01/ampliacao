@@ -130,8 +130,10 @@ class ResultadoForm(forms.ModelForm):
 class ComplementoForm(forms.ModelForm):
     class Meta:
         model = AmpliacaoComplemento
-        fields = ['escola', 'opcao', 'cargo', 'anexo']
+        fields = ['semestre', 'escola', 'opcao', 'cargo', 'anexo']
         widgets = {
+            'semestre': TextInput(
+                attrs={'class': 'form-control', 'style': 'margin-bottom: 10px;', 'placeholder': 'Semestre - Ano'}),
             'opcao': Select(
                 attrs={'class': 'form-control'}),
             'escola': TextInput(

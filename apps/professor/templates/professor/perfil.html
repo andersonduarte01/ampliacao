@@ -244,6 +244,34 @@
               </div>
               {% endif %}
 
+              {% if adendo %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingSeven10">
+                  <button class="accordion-button collapsed text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven10" aria-expanded="false" aria-controls="flush-collapseSeven1">
+                    <span style="margin-right: 10px;"><i class="bi bi-check-circle"></i> </span>Fichas Financeiras - Ampliações de Carga Horária anteriores ao ano de 2021</button>
+                </h2>
+                <div id="flush-collapseSeven10" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven10" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <code>Fichas Financeiras anexadas.</code>
+                    </div>
+                </div>
+              </div>
+              {% else %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingSeven123">
+                  <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven123" aria-expanded="false" aria-controls="flush-collapseSeven">
+                    <span style="margin-right: 10px;"><i class="bi bi-x-circle"></i> </span>
+                    Fichas Financeiras - Ampliações de Carga Horária anteriores ao ano de 2021
+                  </button>
+                </h2>
+                <div id="flush-collapseSeven123" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven123" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <p>Para acrescentar Fichas Financeiras - Ampliações de Carga Horária anteriores ao ano de 2021 - Clique <a href="{% url 'inscricao:complemento' %}">AQUI</a></p>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+
             </div>
             {% else %}
             <a class="btn btn-outline-primary" href="#">Realizar Inscrição</a>
