@@ -216,7 +216,7 @@ class AmpliacaoComplemento(models.Model):
                                 max_length=300, validators=[validate_pdf_extension])
     opcao = models.CharField(verbose_name='Ampliação Temporária', choices=RESPOSTA, default='', max_length=200)
     status = models.BooleanField(verbose_name='Concluido', default=False)
-    requerimento_visto = models.CharField(verbose_name='Check', max_length=15, choices=RESULTADO1, default='Selecione')
+    complemento_visto = models.CharField(verbose_name='Check', max_length=15, choices=RESULTADO1, default='Selecione')
 
     def __str__(self):
         return f'{self.inscricao}'

@@ -16,7 +16,7 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
 
 from .forms import CertificadoForm, RequerimentoForm, ConcursoForm, InscricaoCheck, RequerimentoAmpliacaoCheck, \
-    InformacoesCheck, ResultadoForm, ComplementoForm
+    InformacoesCheck, ResultadoForm, ComplementoForm, ComplementoCheck
 from .models import Inscricao, InformacoesAcademicas, Concurso, RequerimentoAmpliacao, Certificado, Resultado, \
     AmpliacaoComplemento
 from ..professor.models import Professor
@@ -328,14 +328,21 @@ def resumo(request, pk):
     certificados = Certificado.objects.filter(inscricao=inscricao)
     ampliacoes = RequerimentoAmpliacao.objects.filter(inscricao=inscricao)
     results = None
+    complementos = False
 
     try:
         results = Resultado.objects.get(inscricao=inscricao)
     except:
         print('')
 
+    try:
+        complementos = AmpliacaoComplemento.objects.filter(inscricao=inscricao)
+    except:
+        print('')
+
     cursos = []
     ampliacoes_list = []
+    complementos_list = []
     for certificado in certificados:
         if certificado.curso != '':
             cursos.append(certificado)
@@ -344,7 +351,11 @@ def resumo(request, pk):
         if amp.escola != None:
             ampliacoes_list.append(amp)
 
-    contexto = {'professor': professor, 'certificados': cursos, 'ampliacoes': ampliacoes_list, 'resultado': results}
+    for complemento in complementos:
+        if complemento.escola != None:
+            complementos_list.append(complemento)
+
+    contexto = {'professor': professor, 'certificados': cursos, 'ampliacoes': ampliacoes_list, 'resultado': results, 'complementos': complementos_list}
     return render(request, 'inscricao/resumo.html', contexto)
 
 
@@ -355,11 +366,19 @@ def update_status(request, pk):
     try:
         resultado = Resultado.objects.get(inscricao=inscricao)
     except:
-        print('Error')
+        print('Resultado Error')
 
     informacoes_acad = get_object_or_404(InformacoesAcademicas, id=inscricao.informacoes_academicas.id)
     certificados = get_list_or_404(Certificado, inscricao=inscricao)
     ampliacoes = get_list_or_404(RequerimentoAmpliacao, inscricao=inscricao)
+    complemento = False
+
+    try:
+        complemento = AmpliacaoComplemento.objects.filter(inscricao=inscricao)
+        print(f'Complemento existe: {complemento}')
+    except:
+        print('Complemento ERROR')
+
     cursos = []
     for certificado in certificados:
         if certificado.curso != '':
@@ -367,6 +386,11 @@ def update_status(request, pk):
 
     CertificadoFormSet = inlineformset_factory(Inscricao, Certificado, form=CertificadoForm, extra=0, can_delete=False)
     RequerimentoFormSet = inlineformset_factory(Inscricao, RequerimentoAmpliacao, form=RequerimentoAmpliacaoCheck, extra=0, can_delete=False)
+    ComplementoFormSet = False
+
+    if complemento != False:
+        ComplementoFormSet = inlineformset_factory(Inscricao, AmpliacaoComplemento, form=ComplementoCheck, extra=0, can_delete=False)
+        print(f'FormSet: {ComplementoFormSet}')
 
     if request.method == 'POST':
         # Atualiza o status de cada instância com base nos dados do formulário
@@ -375,27 +399,50 @@ def update_status(request, pk):
         informacoes_form = InformacoesCheck(request.POST, instance=informacoes_acad)
         requerimento_formset = RequerimentoFormSet(request.POST, instance=inscricao, prefix='requerimento')
 
-        print(f'Informações: {informacoes_form}')
+        if complemento != False:
+            complemento_formset = ComplementoFormSet(request.POST, instance=inscricao)
+            print(f'Mostrar: {complemento_formset}')
+            if (informacoes_form.is_valid() and inscricao_form.is_valid() and
+                    certificado_formset.is_valid() and requerimento_formset.is_valid() and complemento_formset.is_valid()):
 
-        if (informacoes_form.is_valid() and inscricao_form.is_valid() and
-                certificado_formset.is_valid() and requerimento_formset.is_valid()):
+                certificado_formset.save()
+                requerimento_formset.save()
+                complemento_formset.save()
+                ifo = inscricao_form.save(commit=False)
+                ifo1 = inscricao_form.cleaned_data['visto']
+                print(f'Valor: {ifo1}')
+                ifo.check = ifo1
+                ifo.save()
+                info = informacoes_form.save(commit=False)
 
-            certificado_formset.save()
-            requerimento_formset.save()
-            ifo = inscricao_form.save(commit=False)
-            ifo1 = inscricao_form.cleaned_data['visto']
-            print(f'Valor: {ifo1}')
-            ifo.check = ifo1
-            ifo.save()
-            info = informacoes_form.save(commit=False)
+                if informacoes_form.cleaned_data['info_visto']:
+                    info1 = informacoes_form.cleaned_data['info_visto']
+                    info.info_visto = info1
+                    info.save()
 
-            if informacoes_form.cleaned_data['info_visto']:
-                info1 = informacoes_form.cleaned_data['info_visto']
-                info.info_visto = info1
-                info.save()
+                url = reverse_lazy('inscricao:up_teste', kwargs={'pk': professor.pk})
+                return HttpResponseRedirect(url)
+        else:
+            print('Complemento NOT POST')
+            if (informacoes_form.is_valid() and inscricao_form.is_valid() and
+                    certificado_formset.is_valid() and requerimento_formset.is_valid()):
 
-            url = reverse_lazy('inscricao:up_teste', kwargs={'pk': professor.pk})
-            return HttpResponseRedirect(url)
+                certificado_formset.save()
+                requerimento_formset.save()
+                ifo = inscricao_form.save(commit=False)
+                ifo1 = inscricao_form.cleaned_data['visto']
+                print(f'Valor: {ifo1}')
+                ifo.check = ifo1
+                ifo.save()
+                info = informacoes_form.save(commit=False)
+
+                if informacoes_form.cleaned_data['info_visto']:
+                    info1 = informacoes_form.cleaned_data['info_visto']
+                    info.info_visto = info1
+                    info.save()
+
+                url = reverse_lazy('inscricao:up_teste', kwargs={'pk': professor.pk})
+                return HttpResponseRedirect(url)
 
     else:
         # Se não for uma solicitação POST, exibe os formulários preenchidos com os dados existentes
@@ -403,16 +450,24 @@ def update_status(request, pk):
         requerimento_formset = RequerimentoFormSet(instance=inscricao, prefix='requerimento')
         inscricao_form = InscricaoCheck(instance=inscricao)
         informacoes_form = InformacoesCheck(instance=informacoes_acad)
+        complemento_formset = None
+
+        if complemento != False:
+            complemento_formset = ComplementoFormSet(instance=inscricao)
+
+
     # Renderiza a página com os formulários
     return render(request, 'inscricao/analise.html', {
         'certificado_formset': certificado_formset,
         'inscricao_form': inscricao_form,
         'informacoes_form': informacoes_form,
+        'complemento_formset': complemento_formset,
         'requerimento_formset': requerimento_formset,
         'professor': professor,
         'ampliacoes': ampliacoes,
         'certificados': certificados,
         'resultado': resultado,
+        'complemento': complemento,
     })
 
 

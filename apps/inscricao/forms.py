@@ -144,3 +144,15 @@ class ComplementoForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'style': 'margin-bottom: 10px; margin-top: 15px;'}),
         }
 
+
+class ComplementoCheck(forms.ModelForm):
+    class Meta:
+        model = AmpliacaoComplemento
+        fields = ['complemento_visto', ]
+        labels = {
+            'complemento_visto': '',  # Define a label como uma string vazia para remover o rótulo
+        }
+        widgets = {
+            'complemento_visto': Select(
+                attrs={'class': 'form-control'}),
+        }
