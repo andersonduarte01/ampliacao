@@ -355,7 +355,8 @@ def resumo(request, pk):
         if complemento.escola != None:
             complementos_list.append(complemento)
 
-    contexto = {'professor': professor, 'certificados': cursos, 'ampliacoes': ampliacoes_list, 'resultado': results, 'complementos': complementos_list}
+    contexto = {'professor': professor, 'certificados': cursos, 'ampliacoes': ampliacoes_list,
+                'resultado': results, 'complementos': complementos_list}
     return render(request, 'inscricao/resumo.html', contexto)
 
 
