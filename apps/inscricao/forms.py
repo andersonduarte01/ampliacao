@@ -1,7 +1,8 @@
 from django import forms
-from django.forms import FileInput, TextInput, Select, Textarea
+from django.forms import FileInput, TextInput, Select, Textarea, NumberInput
 
-from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas, Resultado, AmpliacaoComplemento
+from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas, Resultado, \
+    AmpliacaoComplemento, TotalPontos, Experiencia
 
 
 class CertificadoForm(forms.ModelForm):
@@ -49,12 +50,14 @@ class ConcursoForm(forms.ModelForm):
 class CertificadoForm(forms.ModelForm):
     class Meta:
         model = Certificado
-        fields = ['certificado_visto', ]
+        fields = ['certificado_visto', 'pontuacao']
         labels = {
             'certificado_visto': '',  # Define a label como uma string vazia para remover o rótulo
         }
         widgets = {
             'certificado_visto': Select(
+                attrs={'class': 'form-control'}),
+            'pontuacao': Select(
                 attrs={'class': 'form-control'}),
         }
 
@@ -154,5 +157,27 @@ class ComplementoCheck(forms.ModelForm):
         }
         widgets = {
             'complemento_visto': Select(
+                attrs={'class': 'form-control'}),
+        }
+
+
+class PontosForm(forms.ModelForm):
+    class Meta:
+        model = TotalPontos
+        fields = ['total_pontos',]
+        widgets = {
+            'total_pontos': Select(
+                attrs={'class': 'form-control'}),
+        }
+
+
+class ExperienciaForm(forms.ModelForm):
+    class Meta:
+        model = Experiencia
+        fields = ['anos_experiencia', 'pontos_experiencia']
+        widgets = {
+            'anos_experiencia': TextInput(
+                attrs={'class': 'form-control'}),
+            'pontos_experiencia': Select(
                 attrs={'class': 'form-control'}),
         }

@@ -229,6 +229,7 @@
                 <th scope="col" style="font-weight:600;">Curso</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Visualizar</th>
                 <th scope="col" style="font-weight:600;" class="text-center">Aprovado</th>
+                <th scope="col" style="font-weight:600;" class="text-center">Pontuação</th>
               </tr>
               </thead>
               <tbody>
@@ -260,11 +261,17 @@
                       </span>
                     {% endif %}
                     </td>
+                <td class="text-center">{{certificado.pontuacao}}</td>
               </tr>
               {% empty %}
               <p>...</p>
               {% endfor %}
-
+              <tr>
+                    <td class="fw-bold">Total de Pontos</td>
+                    <td class="text-center">-</td>
+                    <td class="text-center">-</td>
+                    <td class="text-center fw-bold">{{ pontos.total_pontos }}</td>
+                  </tr>
               </tbody>
             </table>
           </article>
@@ -381,6 +388,27 @@
 
               </tbody>
             </table>
+          </article>
+
+          <article class="entry entry-single">
+            <h4 class="text-center">
+              Experiência Profissional
+            </h4>
+            <hr>
+            <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col" style="font-weight:600;">Anos de Experiência</th>
+                    <th scope="col" style="font-weight:600;" class="text-center">Pontos</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                    <td>{% if experiencia != None %}{{experiencia.anos_experiencia}}{% else %}0{% endif %}</td>
+                    <td class="text-center">{% if experiencia != None %}{{experiencia.pontos_experiencia}}{% else %}0{% endif %}</td>
+                  </tr>
+                  </tbody>
+                </table>
           </article>
 
         </div><!-- End blog entries list -->

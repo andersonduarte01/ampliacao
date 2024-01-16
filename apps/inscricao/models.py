@@ -166,14 +166,36 @@ class Certificado(models.Model):
         ('1', 'Aprovado'),
         ('2', 'Não Aprovado')
     ]
+    PONTUACAO = [
+        (0, '0'),
+        (0.5, '0.5'),
+    ]
     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
     curso = models.CharField(verbose_name='Curso', max_length=120)
     certificado = models.FileField(upload_to='docs/certificado', verbose_name='Certificado',
                                    max_length=300, validators=[validate_pdf_extension], help_text='Permitido apenas arquivos em formato PDF.')
     certificado_visto = models.CharField(verbose_name='Check', max_length=15, choices=RESULTADO, default='Selecione')
+    pontuacao = models.DecimalField(verbose_name='Pontuação',max_digits=2, decimal_places=1, choices=PONTUACAO, default=0)
 
     def __str__(self):
         return self.curso
+
+
+class TotalPontos(models.Model):
+    PONTOS_CHOICES = [
+        (0.0, '0.0'),
+        (0.5, '0.5'),
+        (1.0, '1.0'),
+        (1.5, '1.5'),
+        (2.0, '2.0'),
+        (2.5, '2.5'),
+        (3.0, '3.0'),
+    ]
+    inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
+    total_pontos = models.DecimalField(max_digits=3, decimal_places=1, default=0, choices=PONTOS_CHOICES)
+
+    def __str__(self):
+        return self.total_pontos
 
 
 class Resultado(models.Model):
@@ -220,3 +242,25 @@ class AmpliacaoComplemento(models.Model):
 
     def __str__(self):
         return f'{self.inscricao}'
+
+
+class Experiencia(models.Model):
+    VALORES_CHOICES = [
+        ('0', '0.0'),
+        ('0.2', '0.2'),
+        ('0.4', '0.4'),
+        ('0.6', '0.6'),
+        ('0.8', '0.8'),
+        ('1.0', '1.0'),
+        ('1.2', '1.2'),
+        ('1.4', '1.4'),
+        ('1.6', '1.6'),
+        ('1.8', '1.8'),
+        ('2.0', '2.0'),
+    ]
+    inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
+    anos_experiencia = models.CharField(verbose_name='Experiência', max_length=10, default='0')
+    pontos_experiencia = models.CharField(max_length=3, choices=VALORES_CHOICES, default=0.0,)
+
+    def __str__(self):
+        return self.pontos_experiencia

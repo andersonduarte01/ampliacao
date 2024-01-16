@@ -16,9 +16,9 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
 
 from .forms import CertificadoForm, RequerimentoForm, ConcursoForm, InscricaoCheck, RequerimentoAmpliacaoCheck, \
-    InformacoesCheck, ResultadoForm, ComplementoForm, ComplementoCheck
+    InformacoesCheck, ResultadoForm, ComplementoForm, ComplementoCheck, PontosForm, ExperienciaForm
 from .models import Inscricao, InformacoesAcademicas, Concurso, RequerimentoAmpliacao, Certificado, Resultado, \
-    AmpliacaoComplemento
+    AmpliacaoComplemento, TotalPontos, Experiencia
 from ..professor.models import Professor
 from ..inscricao.decoradores import StaffRequiredMixin
 import unicodedata
@@ -355,19 +355,47 @@ def resumo(request, pk):
         if complemento.escola != None:
             complementos_list.append(complemento)
 
+    pontos = None
+    try:
+        pontos = TotalPontos.objects.get(inscricao=inscricao)
+    except:
+        print('')
+
+    experiencia = None
+    try:
+        experiencia = Experiencia.objects.get(inscricao=inscricao)
+    except:
+        print('')
+
     contexto = {'professor': professor, 'certificados': cursos, 'ampliacoes': ampliacoes_list,
-                'resultado': results, 'complementos': complementos_list}
+                'resultado': results, 'complementos': complementos_list, 'pontos': pontos, 'experiencia':experiencia}
     return render(request, 'inscricao/resumo.html', contexto)
 
 
 def update_status(request, pk):
     professor = get_object_or_404(Professor, pk=pk)
     inscricao = get_object_or_404(Inscricao, professor=professor)
+
     resultado = None
     try:
         resultado = Resultado.objects.get(inscricao=inscricao)
+
     except:
         print('Resultado Error')
+
+    pontos = None
+    total_p = 0
+    try:
+        pontos = TotalPontos.objects.get(inscricao=inscricao)
+        total_p = pontos.total_pontos
+    except:
+        print('')
+
+    experiencia = None
+    try:
+        experiencia = Experiencia.objects.get(inscricao=inscricao)
+    except:
+        print('')
 
     informacoes_acad = get_object_or_404(InformacoesAcademicas, id=inscricao.informacoes_academicas.id)
     certificados = get_list_or_404(Certificado, inscricao=inscricao)
@@ -376,7 +404,6 @@ def update_status(request, pk):
 
     try:
         complemento = AmpliacaoComplemento.objects.filter(inscricao=inscricao)
-        print(f'Complemento existe: {complemento}')
     except:
         print('Complemento ERROR')
 
@@ -398,20 +425,28 @@ def update_status(request, pk):
         certificado_formset = CertificadoFormSet(request.POST, instance=inscricao, prefix='certificado')
         inscricao_form = InscricaoCheck(request.POST, instance=inscricao)
         informacoes_form = InformacoesCheck(request.POST, instance=informacoes_acad)
+        pontos_form = PontosForm(request.POST, instance=pontos)
+        experiencia_form = ExperienciaForm(request.POST, instance=experiencia)
         requerimento_formset = RequerimentoFormSet(request.POST, instance=inscricao, prefix='requerimento')
 
         if complemento != False:
             complemento_formset = ComplementoFormSet(request.POST, instance=inscricao)
-            print(f'Mostrar: {complemento_formset}')
+
             if (informacoes_form.is_valid() and inscricao_form.is_valid() and
-                    certificado_formset.is_valid() and requerimento_formset.is_valid() and complemento_formset.is_valid()):
+                    certificado_formset.is_valid() and requerimento_formset.is_valid() and complemento_formset.is_valid()
+                    and pontos_form.is_valid() and experiencia_form.is_valid()):
 
                 certificado_formset.save()
                 requerimento_formset.save()
                 complemento_formset.save()
+                pf = pontos_form.save(commit=False)
+                pf.inscricao = inscricao
+                pf.save()
+                pf1 = experiencia_form.save(commit=False)
+                pf1.inscricao = inscricao
+                pf1.save()
                 ifo = inscricao_form.save(commit=False)
                 ifo1 = inscricao_form.cleaned_data['visto']
-                print(f'Valor: {ifo1}')
                 ifo.check = ifo1
                 ifo.save()
                 info = informacoes_form.save(commit=False)
@@ -424,15 +459,20 @@ def update_status(request, pk):
                 url = reverse_lazy('inscricao:up_teste', kwargs={'pk': professor.pk})
                 return HttpResponseRedirect(url)
         else:
-            print('Complemento NOT POST')
             if (informacoes_form.is_valid() and inscricao_form.is_valid() and
-                    certificado_formset.is_valid() and requerimento_formset.is_valid()):
+                    certificado_formset.is_valid() and requerimento_formset.is_valid() and
+                    pontos_form.is_valid() and experiencia_form.is_valid()):
 
                 certificado_formset.save()
+                pf = pontos_form.save(commit=False)
+                pf.inscricao = inscricao
+                pf.save()
+                pf1 = experiencia_form.save(commit=False)
+                pf1.inscricao = inscricao
+                pf1.save()
                 requerimento_formset.save()
                 ifo = inscricao_form.save(commit=False)
                 ifo1 = inscricao_form.cleaned_data['visto']
-                print(f'Valor: {ifo1}')
                 ifo.check = ifo1
                 ifo.save()
                 info = informacoes_form.save(commit=False)
@@ -451,6 +491,8 @@ def update_status(request, pk):
         requerimento_formset = RequerimentoFormSet(instance=inscricao, prefix='requerimento')
         inscricao_form = InscricaoCheck(instance=inscricao)
         informacoes_form = InformacoesCheck(instance=informacoes_acad)
+        pontos_form = PontosForm(instance=pontos)
+        experiencia_form = ExperienciaForm(instance=experiencia)
         complemento_formset = None
 
         if complemento != False:
@@ -469,6 +511,10 @@ def update_status(request, pk):
         'certificados': certificados,
         'resultado': resultado,
         'complemento': complemento,
+        'pontos': pontos_form,
+        'experiencia': experiencia_form,
+        'total': total_p,
+        'experiencia1': experiencia,
     })
 
 
