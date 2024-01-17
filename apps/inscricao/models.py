@@ -198,6 +198,19 @@ class TotalPontos(models.Model):
         return self.total_pontos
 
 
+class PosTotalPontos(models.Model):
+    PONTOS_GRADUACAO = [
+        (0.0, '0.0'),
+        (0.5, '0.5'),
+        (1.0, '1.0'),
+        (1.5, '1.5'),
+        (2.0, '2.0'),
+        (2.5, '2.5'),
+        (3.0, '3.0'),
+    ]
+    inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
+    pos_pontos = models.DecimalField(max_digits=3, decimal_places=1, default=0, choices=PONTOS_GRADUACAO)
+
 class Resultado(models.Model):
     RESULTADO = [
         ('', 'Selecione'),

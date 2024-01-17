@@ -16,9 +16,9 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
 
 from .forms import CertificadoForm, RequerimentoForm, ConcursoForm, InscricaoCheck, RequerimentoAmpliacaoCheck, \
-    InformacoesCheck, ResultadoForm, ComplementoForm, ComplementoCheck, PontosForm, ExperienciaForm
+    InformacoesCheck, ResultadoForm, ComplementoForm, ComplementoCheck, PontosForm, ExperienciaForm, PosPontosForm
 from .models import Inscricao, InformacoesAcademicas, Concurso, RequerimentoAmpliacao, Certificado, Resultado, \
-    AmpliacaoComplemento, TotalPontos, Experiencia
+    AmpliacaoComplemento, TotalPontos, Experiencia, PosTotalPontos
 from ..professor.models import Professor
 from ..inscricao.decoradores import StaffRequiredMixin
 import unicodedata
@@ -355,6 +355,12 @@ def resumo(request, pk):
         if complemento.escola != None:
             complementos_list.append(complemento)
 
+    pos_pontos = None
+    try:
+        pos_pontos = PosTotalPontos.objects.get(inscricao=inscricao)
+    except:
+        print('')
+
     pontos = None
     try:
         pontos = TotalPontos.objects.get(inscricao=inscricao)
@@ -368,7 +374,8 @@ def resumo(request, pk):
         print('')
 
     contexto = {'professor': professor, 'certificados': cursos, 'ampliacoes': ampliacoes_list,
-                'resultado': results, 'complementos': complementos_list, 'pontos': pontos, 'experiencia':experiencia}
+                'resultado': results, 'complementos': complementos_list, 'pontos': pontos,
+                'experiencia': experiencia, 'pos': pos_pontos}
     return render(request, 'inscricao/resumo.html', contexto)
 
 
@@ -388,6 +395,12 @@ def update_status(request, pk):
     try:
         pontos = TotalPontos.objects.get(inscricao=inscricao)
         total_p = pontos.total_pontos
+    except:
+        print('')
+
+    total_pos = None
+    try:
+        total_pos = PosTotalPontos.objects.get(inscricao=inscricao)
     except:
         print('')
 
@@ -426,6 +439,7 @@ def update_status(request, pk):
         inscricao_form = InscricaoCheck(request.POST, instance=inscricao)
         informacoes_form = InformacoesCheck(request.POST, instance=informacoes_acad)
         pontos_form = PontosForm(request.POST, instance=pontos)
+        pos_form = PosPontosForm(request.POST, instance=total_pos)
         experiencia_form = ExperienciaForm(request.POST, instance=experiencia)
         requerimento_formset = RequerimentoFormSet(request.POST, instance=inscricao, prefix='requerimento')
 
@@ -434,7 +448,7 @@ def update_status(request, pk):
 
             if (informacoes_form.is_valid() and inscricao_form.is_valid() and
                     certificado_formset.is_valid() and requerimento_formset.is_valid() and complemento_formset.is_valid()
-                    and pontos_form.is_valid() and experiencia_form.is_valid()):
+                    and pontos_form.is_valid() and experiencia_form.is_valid() and pos_form.is_valid()):
 
                 certificado_formset.save()
                 requerimento_formset.save()
@@ -442,6 +456,9 @@ def update_status(request, pk):
                 pf = pontos_form.save(commit=False)
                 pf.inscricao = inscricao
                 pf.save()
+                pfs = pos_form.save(commit=False)
+                pfs.inscricao = inscricao
+                pfs.save()
                 pf1 = experiencia_form.save(commit=False)
                 pf1.inscricao = inscricao
                 pf1.save()
@@ -461,12 +478,15 @@ def update_status(request, pk):
         else:
             if (informacoes_form.is_valid() and inscricao_form.is_valid() and
                     certificado_formset.is_valid() and requerimento_formset.is_valid() and
-                    pontos_form.is_valid() and experiencia_form.is_valid()):
+                    pontos_form.is_valid() and experiencia_form.is_valid() and pos_form.is_valid()):
 
                 certificado_formset.save()
                 pf = pontos_form.save(commit=False)
                 pf.inscricao = inscricao
                 pf.save()
+                pfs = pos_form.save(commit=False)
+                pfs.inscricao = inscricao
+                pfs.save()
                 pf1 = experiencia_form.save(commit=False)
                 pf1.inscricao = inscricao
                 pf1.save()
@@ -492,6 +512,7 @@ def update_status(request, pk):
         inscricao_form = InscricaoCheck(instance=inscricao)
         informacoes_form = InformacoesCheck(instance=informacoes_acad)
         pontos_form = PontosForm(instance=pontos)
+        pos_form = PosPontosForm(instance=total_pos)
         experiencia_form = ExperienciaForm(instance=experiencia)
         complemento_formset = None
 
@@ -512,8 +533,10 @@ def update_status(request, pk):
         'resultado': resultado,
         'complemento': complemento,
         'pontos': pontos_form,
+        'pos_form': pos_form,
         'experiencia': experiencia_form,
         'total': total_p,
+        'total_pos': total_pos,
         'experiencia1': experiencia,
     })
 

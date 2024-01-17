@@ -2,7 +2,7 @@ from django import forms
 from django.forms import FileInput, TextInput, Select, Textarea, NumberInput
 
 from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas, Resultado, \
-    AmpliacaoComplemento, TotalPontos, Experiencia
+    AmpliacaoComplemento, TotalPontos, Experiencia, PosTotalPontos
 
 
 class CertificadoForm(forms.ModelForm):
@@ -167,6 +167,16 @@ class PontosForm(forms.ModelForm):
         fields = ['total_pontos',]
         widgets = {
             'total_pontos': Select(
+                attrs={'class': 'form-control'}),
+        }
+
+
+class PosPontosForm(forms.ModelForm):
+    class Meta:
+        model = PosTotalPontos
+        fields = ['pos_pontos',]
+        widgets = {
+            'pos_pontos': Select(
                 attrs={'class': 'form-control'}),
         }
 
