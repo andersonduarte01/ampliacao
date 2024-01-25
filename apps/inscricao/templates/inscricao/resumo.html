@@ -20,6 +20,7 @@
               <li class="list-group-item text-center">{{professor.nome}}</li>
               <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">RG:</span> {{professor.rg}}</li>
               <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">CPF: </span>{{professor.cpf}}</li>
+              <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">Data Nasc.: </span>{{professor.data_nascimento}}</li>
               <li class="list-group-item fw-bold text-primary">Solicitação de Ampliação</li>
               <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">1º Opção: </span>{% if professor.inscricao.opcao1 != None%}{{professor.inscricao.opcao1}}{% else %}{% endif %}</li>
               <li class="list-group-item" style="font-size: 0.9rem;"><span class="fw-bold">2º Opção: </span>{% if professor.inscricao.opcao2 != None%}{{professor.inscricao.opcao2}}{% else %}{% endif %}</li>
