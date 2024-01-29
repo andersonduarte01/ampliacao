@@ -1,0 +1,44 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block titulo %}Resultado{% endblock %}
+{% block conteudo %}
+<main id="main">
+  <section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+
+      <div class="row">
+        <div class="col-lg-12 entries">
+          <article class="entry entry-single">
+            <div class="card">
+              <div class="card-header fw-bold text-center text-white bg-primary">{{professor}}</div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item text-primary"><span class="fw-bold">Nome:</span> {{professor}}</li>
+                <li class="list-group-item bg-light text-primary"><span class="fw-bold">CPF:</span> {{professor.cpf}}</li>
+                <li class="list-group-item text-primary"><span class="fw-bold">Matrícula:</span> {{professor.matricula}}</li>
+                <li class="list-group-item bg-light text-primary"><span class="fw-bold">Resultado:</span>
+                  {% if resultado.resultado == 'Negado' %}
+                  <span class="text-danger">{{resultado.resultado}}</span>
+                  {% else %}
+                  <span class="text-primary">{{resultado.resultado}}</span>
+                  {% endif %}
+                </li>
+                <li class="list-group-item fw-bold text-center text-primary">Fundamento</li>
+                {% if resultado.resultado == 'Negado' %}
+                <li class="list-group-item bg-light text-danger">{{resultado.comentario}}</li>
+                {% else %}
+                <li class="list-group-item bg-light text-primary">{{resultado.comentario}}</li>
+                {% endif %}
+              </ul>
+            </div>
+          </article>
+        </div><!-- End blog entries list -->
+
+        <!-- End blog sidebar -->
+
+      </div>
+
+    </div>
+  </section>
+</main>
+{% endblock %}

@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.CadastrarProfessor.as_view(), name='cad_professor'),
     path('atualizar_dados/<int:pk>/', views.AtualizarProfessor.as_view(), name='up_professor'),
     path('detalhes/', views.DetalhesInscricao.as_view(), name='detalhes'),
+    path('resultado/', views.ResultadoAmp.as_view(), name='resultado'),
     ## ADM
     path('painel/', views.PainelAdm.as_view(), name='administrador'),
     ## Tabelas

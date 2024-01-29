@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView, ListView
 
 from .models import Professor
-from ..inscricao.models import Inscricao, InformacoesAcademicas, Certificado, RequerimentoAmpliacao, AmpliacaoComplemento
+from ..inscricao.models import Inscricao, InformacoesAcademicas, Certificado, RequerimentoAmpliacao, AmpliacaoComplemento, Resultado
 from .forms import UserCreationProfessor
 from ..inscricao.decoradores import StaffRequiredMixin
 
@@ -90,6 +90,19 @@ class DetalhesInscricao(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
         context['termo'] = termo
         print(adendo)
         context['adendo'] = adendo
+        return context
+
+
+class ResultadoAmp(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
+    template_name = 'professor/resultado.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        professor = Professor.objects.get(id=self.request.user.id)
+        inscricao = Inscricao.objects.get(professor=professor)
+        resultado = Resultado.objects.get(inscricao=inscricao)
+        context['professor'] = professor
+        context['resultado'] = resultado
         return context
 
 

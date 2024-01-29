@@ -352,10 +352,10 @@
       var comentario = '';
       switch (resultadoSelecionado) {
         case 'Aprovado':
-          comentario = 'Do exame da documentação acostada pelo(a) requerente {{professor}} no processo da Ampliação Definitiva/2023 do município de Pedra Branca, infere-se pelo preenchimento dos requisitos previstos nos artigos 1º e 2º, da Lei nº 829/2023, conforme se depreende da análise documental a seguir:';
+          comentario = 'Do exame da documentação acostada pelo(a) requerente {{professor}}, Matrícula {{professor.matricula}}, verificou-se o preenchimento dos requisitos previstos na Lei Municipal Nº 829/2023 e no EDITAL N° 005/2023 – Processo de Ampliação Definitiva de Carga Horária de Trabalho dos Professores Efetivos do Município de Pedra Branca-CE; ensejando, portanto, a APROVAÇÃO do(a) candidato(a) no certame, observada sua colocação na lista de classificação.';
           break;
         case 'Negado':
-          comentario = 'Do exame da documentação acostada pelo(a) requerente {{professor}} no processo da Ampliação Definitiva/2023 do município de Pedra Branca, infere-se pelo não preenchimento dos requisitos previstos nos artigos 1º e 2º, da Lei nº 829/2023, em virtude de não ter comprovado a condição de (ESPAÇO A SER PREENCHIDO) (ex: ser professor(a) concursado(a) e efetivo(a) do município de Pedra Branca), conforme se depreende da análise documental a seguir:';
+          comentario = 'Do exame da documentação acostada pelo(a) requerente {{professor}}, Matrícula {{professor.matricula}}, verificou-se o NÃO preenchimento dos requisitos previstos no(s) __(espaço)____, da Lei Municipal Nº 829/2023 e do EDITAL N° 005/2023 – Processo de Ampliação Definitiva de Carga Horária de Trabalho dos Professores Efetivos do Município de Pedra Branca-CE, em virtude de não ter comprovado a condição de (ESPAÇO A SER PREENCHIDO), ensejando, portanto, a NÃO aprovação do(a) candidato(a) no certame.';
           break;
         // Adicione mais casos conforme necessário
 
