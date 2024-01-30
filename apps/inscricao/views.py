@@ -16,9 +16,9 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
 
 from .forms import CertificadoForm, RequerimentoForm, ConcursoForm, InscricaoCheck, RequerimentoAmpliacaoCheck, \
-    InformacoesCheck, ResultadoForm, ComplementoForm, ComplementoCheck, PontosForm, ExperienciaForm, PosPontosForm
+    InformacoesCheck, ResultadoForm, ComplementoForm, RecursoForm , ComplementoCheck, PontosForm, ExperienciaForm, PosPontosForm
 from .models import Inscricao, InformacoesAcademicas, Concurso, RequerimentoAmpliacao, Certificado, Resultado, \
-    AmpliacaoComplemento, TotalPontos, Experiencia, PosTotalPontos
+    AmpliacaoComplemento, TotalPontos, Experiencia, PosTotalPontos, Recurso
 from ..professor.models import Professor
 from ..inscricao.decoradores import StaffRequiredMixin
 import unicodedata
@@ -633,3 +633,23 @@ def requerimentoComplemento(request):
         formset = RequerimentoFormSet()
 
     return render(request, 'inscricao/requerimentoComplemento.html', {'formset': formset, 'adendo': adendo})
+
+
+class RecursoView(LoginRequiredMixin, CreateView):
+    form_class = RecursoForm
+    template_name = 'inscricao/recurso.html'
+    context_object_name = 'form'
+
+    def get_success_url(self):
+        return reverse_lazy('professor:detalhes')
+
+    def form_valid(self, form):
+        info = form.save(commit=False)
+        professor = Professor.objects.get(id=self.request.user.id)
+        inscricao = Inscricao.objects.get(professor=professor)
+        info.inscricao = inscricao
+        info.documento.name = generate_random_filename(info.documento.name)
+        info.documento_1.name = generate_random_filename(info.documento_1.name)
+        info.documento_2.name = generate_random_filename(info.documento_2.name)
+        info.save()
+        return super().form_valid(form)

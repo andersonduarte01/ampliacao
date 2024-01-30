@@ -2,7 +2,7 @@ from django import forms
 from django.forms import FileInput, TextInput, Select, Textarea, NumberInput
 
 from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas, Resultado, \
-    AmpliacaoComplemento, TotalPontos, Experiencia, PosTotalPontos
+    AmpliacaoComplemento, TotalPontos, Experiencia, PosTotalPontos, Recurso
 
 
 class CertificadoForm(forms.ModelForm):
@@ -38,7 +38,7 @@ class RequerimentoForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'style': 'margin-bottom: 10px; margin-top: 15px;'}),
         }
 
-    #opcao = forms.ChoiceField(widget=forms.RadioSelect, choices=RequerimentoAmpliacao.RESPOSTA)
+    # opcao = forms.ChoiceField(widget=forms.RadioSelect, choices=RequerimentoAmpliacao.RESPOSTA)
 
 
 class ConcursoForm(forms.ModelForm):
@@ -164,7 +164,7 @@ class ComplementoCheck(forms.ModelForm):
 class PontosForm(forms.ModelForm):
     class Meta:
         model = TotalPontos
-        fields = ['total_pontos',]
+        fields = ['total_pontos', ]
         widgets = {
             'total_pontos': Select(
                 attrs={'class': 'form-control'}),
@@ -174,7 +174,7 @@ class PontosForm(forms.ModelForm):
 class PosPontosForm(forms.ModelForm):
     class Meta:
         model = PosTotalPontos
-        fields = ['pos_pontos',]
+        fields = ['pos_pontos', ]
         widgets = {
             'pos_pontos': Select(
                 attrs={'class': 'form-control'}),
@@ -190,4 +190,16 @@ class ExperienciaForm(forms.ModelForm):
                 attrs={'class': 'form-control'}),
             'pontos_experiencia': Select(
                 attrs={'class': 'form-control'}),
+        }
+
+
+class RecursoForm(forms.ModelForm):
+    class Meta:
+        model = Recurso
+        fields = ['razoes', 'documento', 'documento_1', 'documento_2']
+        widgets = {
+            'documento': FileInput(attrs={'class': 'form-control'}),
+            'documento_1': FileInput(attrs={'class': 'form-control'}),
+            'documento_2': FileInput(attrs={'class': 'form-control'}),
+            'razoes': Textarea(attrs={'class': 'form-control'}),
         }

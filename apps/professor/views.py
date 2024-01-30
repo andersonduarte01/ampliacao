@@ -6,7 +6,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView, ListView
 
 from .models import Professor
-from ..inscricao.models import Inscricao, Documento, Certificado, RequerimentoAmpliacao, AmpliacaoComplemento, Resultado
+from ..inscricao.models import Inscricao, Documento, Certificado, RequerimentoAmpliacao, AmpliacaoComplemento, \
+    Resultado, Recurso
 from .forms import UserCreationProfessor
 from ..inscricao.decoradores import StaffRequiredMixin
 
@@ -43,6 +44,7 @@ class DetalhesInscricao(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
         termo = False
         adendo = False
         documento = ''
+        recurso = None
 
         try:
             documento = Documento.objects.filter(id=1)
@@ -83,6 +85,13 @@ class DetalhesInscricao(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
         except:
             adendo = False
 
+        try:
+            recurso = Recurso.objects.get(inscricao=inscricao)
+            if len(anteriores) > 0:
+                adendo = True
+        except:
+            print('')
+
         if inscricao:
             analisarInscricao(inscricao=inscricao, info_acad=info_acad, concurso=concurso,
                               certificados=certificados, carga_horaria=carga_horaria, termo=termo)
@@ -95,7 +104,7 @@ class DetalhesInscricao(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
         context['carga'] = carga_horaria
         context['termo'] = termo
         context['documento'] = documento
-        print(adendo)
+        context['recurso'] = recurso
         context['adendo'] = adendo
         return context
 

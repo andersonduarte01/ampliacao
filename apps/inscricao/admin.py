@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas, Resultado, \
-    AmpliacaoComplemento, TotalPontos, Experiencia, Documento
+    AmpliacaoComplemento, TotalPontos, Experiencia, Documento, Recurso
 
 
 # Register your models here.
@@ -59,3 +59,4 @@ admin.site.register(AmpliacaoComplemento)
 admin.site.register(TotalPontos)
 admin.site.register(Experiencia)
 admin.site.register(Documento)
+admin.site.register(Recurso)

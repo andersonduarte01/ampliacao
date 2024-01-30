@@ -284,13 +284,18 @@ class Documento(models.Model):
                                         max_length=300, validators=[validate_pdf_extension],
                                         help_text='Permitido apenas arquivos em formato PDF.')
 
-# class Certificado(models.Model):
-#     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
-#     razoes = models.TextField(verbose_name='Razões do Recurso')
-#     recurso = models.FileField(upload_to='docs/certificado', verbose_name='Certificado',
-#                                    max_length=300, validators=[validate_pdf_extension],
-#                                    help_text='Permitido apenas arquivos em formato PDF.')
-#     recurso_visto = models.BooleanField(verbose_name='Analisado?', default=False)
-#
-#     def __str__(self):
-#         return self.curso
+
+class Recurso(models.Model):
+    inscricao = models.ForeignKey(Inscricao, on_delete=models.DO_NOTHING)
+    razoes = models.TextField(verbose_name='Descreva')
+    documento = models.FileField(upload_to='docs/certificado', verbose_name='Anexo',
+                                   max_length=300, validators=[validate_pdf_extension],
+                                   help_text='Permitido apenas arquivos em formato PDF.', blank=True, null=True)
+    documento_1 = models.FileField(upload_to='docs/certificado', verbose_name='Anexo 1',
+                                 max_length=300, validators=[validate_pdf_extension],
+                                 help_text='Permitido apenas arquivos em formato PDF.', blank=True, null=True)
+    documento_2 = models.FileField(upload_to='docs/certificado', verbose_name='Anexo 2',
+                                 max_length=300, validators=[validate_pdf_extension],
+                                 help_text='Permitido apenas arquivos em formato PDF.', blank=True, null=True)
+    recurso_visto = models.BooleanField(verbose_name='Analisado?', default=False)
+    recurso_aceito = models.BooleanField(verbose_name='Recurso Aceito?', default=False)
