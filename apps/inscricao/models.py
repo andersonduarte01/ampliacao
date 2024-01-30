@@ -279,6 +279,11 @@ class Experiencia(models.Model):
         return self.pontos_experiencia
 
 
+class Documento(models.Model):
+    documento = models.FileField(upload_to='docs/certificado', verbose_name='Documento',
+                                        max_length=300, validators=[validate_pdf_extension],
+                                        help_text='Permitido apenas arquivos em formato PDF.')
+
 # class Certificado(models.Model):
 #     inscricao = models.ForeignKey(Inscricao, on_delete=models.CASCADE)
 #     razoes = models.TextField(verbose_name='Razões do Recurso')

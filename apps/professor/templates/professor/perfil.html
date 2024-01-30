@@ -59,14 +59,14 @@
         </div>
         <div class="col-lg-8 entries">
           <article class="entry entry-single">
-            <h2 class="entry-title text-center">Resultado Ampliação</h2>
+            <h4 class="text-center">RESULTADO INDIVIDUAL</h4>
             <div class="d-grid gap-2">
-              <a href="#" class="btn btn-outline-primary" type="button">Clique Aqui</a>
+              <a href="{% url 'professor:resultado'  %}" class="btn btn-outline-primary" type="button">Clique Aqui</a>
             </div>
             <hr>
-            <h2 class="entry-title text-center">Teste Preliminar</h2>
+            <h4 class="text-center">RESULTADO GERAL PRELIMINAR</h4>
             <div class="d-grid gap-2">
-              <a href="https://ampliacaodefinitivapb.com.br/media/teste.pdf" class="btn btn-outline-primary" type="button" target="_blank">Clique Aqui</a>
+              <a href="{{documento.0.documento.url}}" class="btn btn-outline-primary" type="button" target="_blank">Baixar</a>
             </div>
           </article>
 <!--          <article class="entry entry-single">-->
