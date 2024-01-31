@@ -13,16 +13,16 @@
 
             <article class="entry">
 
-              <h2 class="entry-title text-center">
+              <h4 class="entry-title text-center">
                 <a href="#">RAZÕES DO RECURSO</a>
-              </h2>
+              </h4>
 
               <div class="entry-content">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% bootstrap_form form %}
                     <br>
-                    <button type="submit" class="btn btn-outline-primary">Salvar</button>
+                    <button type="submit" class="btn btn-outline-primary">Enviar</button>
                     </form>
               </div>
 
