@@ -288,13 +288,13 @@ class Documento(models.Model):
 class Recurso(models.Model):
     inscricao = models.ForeignKey(Inscricao, on_delete=models.DO_NOTHING)
     razoes = models.TextField(verbose_name='Descreva')
-    documento = models.FileField(upload_to='docs/certificado', verbose_name='Anexo',
+    documento = models.FileField(upload_to='docs/certificado', verbose_name='Documento(s) de Comprovação',
                                    max_length=300, validators=[validate_pdf_extension],
                                    help_text='Permitido apenas arquivos em formato PDF.', blank=True, null=True)
-    documento_1 = models.FileField(upload_to='docs/certificado', verbose_name='Anexo 1',
+    documento_1 = models.FileField(upload_to='docs/certificado', verbose_name='Documento(s) de Comprovação 1',
                                  max_length=300, validators=[validate_pdf_extension],
                                  help_text='Permitido apenas arquivos em formato PDF.', blank=True, null=True)
-    documento_2 = models.FileField(upload_to='docs/certificado', verbose_name='Anexo 2',
+    documento_2 = models.FileField(upload_to='docs/certificado', verbose_name='Documento(s) de Comprovação 2',
                                  max_length=300, validators=[validate_pdf_extension],
                                  help_text='Permitido apenas arquivos em formato PDF.', blank=True, null=True)
     recurso_visto = models.BooleanField(verbose_name='Analisado?', default=False)

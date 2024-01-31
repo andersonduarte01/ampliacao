@@ -72,7 +72,7 @@
             <h4 class="text-center">RECURSO</h4>
             <div class="d-grid gap-2">
               {% if recurso == None %}
-              <a href="#" class="btn btn-outline-primary" type="button">Clique Aqui</a>
+              <a href="{% url 'inscricao:recurso' %}" class="btn btn-outline-primary" type="button">Clique Aqui</a>
               {% else %}
               <button class="btn btn-outline-primary" type="button" disabled>Recurso Realizado com Sucesso!</button>
               {% endif %}
