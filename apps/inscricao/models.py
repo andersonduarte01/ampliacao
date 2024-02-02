@@ -299,3 +299,6 @@ class Recurso(models.Model):
                                  help_text='Permitido apenas arquivos em formato PDF.', blank=True, null=True)
     recurso_visto = models.BooleanField(verbose_name='Analisado?', default=False)
     recurso_aceito = models.BooleanField(verbose_name='Recurso Aceito?', default=False)
+
+    def __str__(self):
+        return self.inscricao
