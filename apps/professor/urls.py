@@ -17,5 +17,6 @@ urlpatterns = [
     path('inscricoes_analisadas/', views.InscricoesAnalisadas.as_view(), name='concl_list'),
     path('inscricoes_incompletas/', views.InscricoesIncompletas.as_view(), name='incompletas_list'),
     path('inscricoes_outros/', views.InscricoesOutros.as_view(), name='outros_list'),
+    path('inscricoes_recursos/', views.InscricoesRecursos.as_view(), name='recursos_list'),
     path('com_complementos/', views.InscricoesComplementos.as_view(), name='complementos_list'),
 ]

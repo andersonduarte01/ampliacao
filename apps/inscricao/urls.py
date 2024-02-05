@@ -20,6 +20,7 @@ urlpatterns = [
     ## analises
     path('<int:pk>/resultado_da_analise', views.update_status, name='up_teste'),
     path('professor/<int:pk>/finalizar_analise', views.analisarIncricao, name='finalizar'),
+    path('professor/<int:pk>/finalizar_recurso', views.analisarRecurso, name='finalizar_recurso'),
     path('professor/<int:pk>/resumo', views.resumo, name='resumo'),
     path('relatorio/<int:pk>/inscricao', views.RelatorioPDF.as_view(), name='relatorio'),
 ]

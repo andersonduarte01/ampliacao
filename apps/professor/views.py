@@ -204,6 +204,16 @@ class InscricoesOutros(StaffRequiredMixin, ListView):
         return inscricoes
 
 
+class InscricoesRecursos(StaffRequiredMixin, ListView):
+    model = Recurso
+    template_name = 'professor/inscricoes_recursos.html'
+    context_object_name = 'recursos'
+
+    def get_queryset(self):
+        recursos = Recurso.objects.all()
+        return recursos
+
+
 class InscricoesComplementos(StaffRequiredMixin, ListView):
     model = Inscricao
     template_name = 'professor/inscricoes_complementos.html'

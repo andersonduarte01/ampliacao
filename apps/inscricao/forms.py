@@ -2,7 +2,7 @@ from django import forms
 from django.forms import FileInput, TextInput, Select, Textarea, NumberInput
 
 from .models import Inscricao, Certificado, RequerimentoAmpliacao, Concurso, InformacoesAcademicas, Resultado, \
-    AmpliacaoComplemento, TotalPontos, Experiencia, PosTotalPontos, Recurso
+    AmpliacaoComplemento, TotalPontos, Experiencia, PosTotalPontos, Recurso, ResultadoRecurso
 
 
 class CertificadoForm(forms.ModelForm):
@@ -121,6 +121,18 @@ class InformacoesCheck(forms.ModelForm):
 class ResultadoForm(forms.ModelForm):
     class Meta:
         model = Resultado
+        fields = ['resultado', 'comentario']
+        widgets = {
+            'resultado': Select(
+                attrs={'class': 'form-control'}),
+            'comentario': Textarea(
+                attrs={'class': 'form-control'}),
+        }
+
+
+class ResultadoRecursoForm(forms.ModelForm):
+    class Meta:
+        model = ResultadoRecurso
         fields = ['resultado', 'comentario']
         widgets = {
             'resultado': Select(

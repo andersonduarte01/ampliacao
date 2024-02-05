@@ -297,8 +297,37 @@ class Recurso(models.Model):
     documento_2 = models.FileField(upload_to='docs/certificado', verbose_name='Documento(s) de Comprovação 2',
                                  max_length=300, validators=[validate_pdf_extension],
                                  help_text='Permitido apenas arquivos em formato PDF.', blank=True, null=True)
-    recurso_visto = models.BooleanField(verbose_name='Analisado?', default=False)
-    recurso_aceito = models.BooleanField(verbose_name='Recurso Aceito?', default=False)
+
 
     def __str__(self):
         return self.inscricao
+
+    def doc(self):
+        if self.documento:
+            return True
+        else:
+            return False
+
+    def doc1(self):
+        if self.documento_1:
+            return True
+        else:
+            return False
+
+    def doc2(self):
+        if self.documento_2:
+            return True
+        else:
+            return False
+
+class ResultadoRecurso(models.Model):
+    RESULTADO = [
+        ('', 'Selecione'),
+        ('Aprovado', 'Aprovado'),
+        ('Negado', 'Negado')
+    ]
+    recurso = models.OneToOneField(Recurso, verbose_name='Resultado do Inscrição', on_delete=models.CASCADE)
+    resultado = models.CharField(verbose_name='Resultado', max_length=30, choices=RESULTADO, default='Selecione')
+    comentario = models.TextField(null=True, blank=True, verbose_name='Comentário')
+    recurso_visto = models.BooleanField(verbose_name='Analisado?', default=False)
+    recurso_aceito = models.BooleanField(verbose_name='Recurso Aceito?', default=False)

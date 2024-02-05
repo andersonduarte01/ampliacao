@@ -16,9 +16,10 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
 
 from .forms import CertificadoForm, RequerimentoForm, ConcursoForm, InscricaoCheck, RequerimentoAmpliacaoCheck, \
-    InformacoesCheck, ResultadoForm, ComplementoForm, RecursoForm , ComplementoCheck, PontosForm, ExperienciaForm, PosPontosForm
+    InformacoesCheck, ResultadoForm, ComplementoForm, RecursoForm, ComplementoCheck, PontosForm, ExperienciaForm, \
+    PosPontosForm, ResultadoRecursoForm
 from .models import Inscricao, InformacoesAcademicas, Concurso, RequerimentoAmpliacao, Certificado, Resultado, \
-    AmpliacaoComplemento, TotalPontos, Experiencia, PosTotalPontos, Recurso
+    AmpliacaoComplemento, TotalPontos, Experiencia, PosTotalPontos, Recurso, ResultadoRecurso
 from ..professor.models import Professor
 from ..inscricao.decoradores import StaffRequiredMixin
 import unicodedata
@@ -653,3 +654,42 @@ class RecursoView(LoginRequiredMixin, CreateView):
         info.documento_2.name = generate_random_filename(info.documento_2.name)
         info.save()
         return super().form_valid(form)
+
+
+def analisarRecurso(request, pk):
+    professor = Professor.objects.get(pk=pk)
+    inscricao = Inscricao.objects.get(professor=professor)
+    recurso_recurso = None
+    results_recurso = None
+
+    try:
+        recurso_recurso = Recurso.objects.get(inscricao=inscricao)
+    except:
+        print('Print')
+
+    try:
+        results_recurso = ResultadoRecurso.objects.get(recurso=recurso_recurso)
+    except:
+        print('')
+
+    if request.method == 'POST':
+        form = ResultadoRecursoForm(request.POST)
+        if form.is_valid():
+            resultado_recurso, created = ResultadoRecurso.objects.get_or_create(recurso=recurso_recurso)
+            resultado_recurso.resultado = form.cleaned_data['resultado']
+
+            resultado_recurso.comentario = form.cleaned_data['comentario']
+            resultado_recurso.recurso_visto = True
+            resultado_recurso.recurso = recurso_recurso
+            resultado_recurso.save()
+
+            inscricao.analisado = True
+            inscricao.save()
+
+            url = reverse_lazy('professor:administrador')
+            return HttpResponseRedirect(url)
+    else:
+        form = ResultadoRecursoForm(instance=results_recurso)
+
+    contexto = {'form': form, 'professor': professor, 'recurso': recurso_recurso}
+    return render(request, 'inscricao/resultado_recurso.html', contexto)
