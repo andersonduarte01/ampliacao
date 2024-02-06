@@ -300,7 +300,7 @@ class Recurso(models.Model):
 
 
     def __str__(self):
-        return self.inscricao
+        return self.inscricao.professor.nome
 
     def doc(self):
         if self.documento:

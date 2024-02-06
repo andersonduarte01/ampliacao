@@ -15,6 +15,7 @@ def arquivo_foto(instance, filename):
         return os.path.join('Imagens/perfil', new_filename)
     return filename  # Retorna o nome original se for None
 
+
 class Professor(Usuario):
     foto = StdImageField(upload_to=arquivo_foto,
                          variations={'thumbnail': {'width': 300, 'height': 400}})
