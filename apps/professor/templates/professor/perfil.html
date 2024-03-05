@@ -59,24 +59,11 @@
         </div>
         <div class="col-lg-8 entries">
           <article class="entry entry-single">
-            <h4 class="text-center">RESULTADO INDIVIDUAL</h4>
+            <h4 class="text-center">RESULTADO RECURSO {{resultado_recurso.pk}}</h4>
             <div class="d-grid gap-2">
-              <a href="{% url 'professor:resultado'  %}" class="btn btn-outline-primary" type="button">Clique Aqui</a>
+              <a href="{% url 'professor:resultado_recurso' pk=resultado_recurso.pk %}" class="btn btn-outline-primary" type="button">Clique Aqui</a>
             </div>
             <hr>
-            <h4 class="text-center">RESULTADO GERAL PRELIMINAR</h4>
-            <div class="d-grid gap-2">
-              <a href="{{documento.0.documento.url}}" class="btn btn-outline-primary" type="button" target="_blank">Baixar</a>
-            </div>
-            <hr>
-            <h4 class="text-center">RECURSO</h4>
-            <div class="d-grid gap-2">
-              {% if recurso == None %}
-              <a href="#" class="btn btn-outline-primary" type="button">Clique Aqui</a>
-              {% else %}
-              <button class="btn btn-outline-primary" type="button" disabled>Recurso Realizado com Sucesso!</button>
-              {% endif %}
-            </div>
           </article>
 <!--          <article class="entry entry-single">-->
 <!--            <h2 class="entry-title text-center">-->

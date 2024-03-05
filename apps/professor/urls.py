@@ -8,6 +8,7 @@ urlpatterns = [
     path('atualizar_dados/<int:pk>/', views.AtualizarProfessor.as_view(), name='up_professor'),
     path('detalhes/', views.DetalhesInscricao.as_view(), name='detalhes'),
     path('resultado/', views.ResultadoAmp.as_view(), name='resultado'),
+    path('recurso/resultado/<int:pk>/', views.ResultadoRecurso1.as_view(), name='resultado_recurso'),
     ## ADM
     path('painel/', views.PainelAdm.as_view(), name='administrador'),
     ## Tabelas

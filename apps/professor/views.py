@@ -7,7 +7,7 @@ from django.views.generic import CreateView, TemplateView, UpdateView, ListView
 
 from .models import Professor
 from ..inscricao.models import Inscricao, Documento, Certificado, RequerimentoAmpliacao, AmpliacaoComplemento, \
-    Resultado, Recurso
+    Resultado, Recurso, ResultadoRecurso
 from .forms import UserCreationProfessor
 from ..inscricao.decoradores import StaffRequiredMixin
 
@@ -45,6 +45,7 @@ class DetalhesInscricao(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
         adendo = False
         documento = ''
         recurso = None
+        resultado_recurso = None
 
         try:
             documento = Documento.objects.filter(id=1)
@@ -87,10 +88,12 @@ class DetalhesInscricao(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
 
         try:
             recurso = Recurso.objects.get(inscricao=inscricao)
+            resultado_recurso = ResultadoRecurso.objects.get(recurso=recurso)
             if len(anteriores) > 0:
                 adendo = True
         except:
             print('')
+
 
         if inscricao:
             analisarInscricao(inscricao=inscricao, info_acad=info_acad, concurso=concurso,
@@ -106,6 +109,7 @@ class DetalhesInscricao(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
         context['documento'] = documento
         context['recurso'] = recurso
         context['adendo'] = adendo
+        context['resultado_recurso'] = resultado_recurso
         return context
 
 
@@ -235,3 +239,15 @@ class InscricoesIncompletas(StaffRequiredMixin, ListView):
 
     def get_queryset(self):
         return Inscricao.inscricoes_incompletas()
+
+
+class ResultadoRecurso1(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
+    template_name = 'professor/resultado_recurso.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        professor = Professor.objects.get(id=self.request.user.id)
+        resultado = ResultadoRecurso.objects.get(pk=self.kwargs['pk'])
+        context['professor'] = professor
+        context['resultado'] = resultado
+        return context
