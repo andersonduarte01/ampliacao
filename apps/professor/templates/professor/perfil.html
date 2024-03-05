@@ -59,9 +59,13 @@
         </div>
         <div class="col-lg-8 entries">
           <article class="entry entry-single">
-            <h4 class="text-center">RESULTADO RECURSO {{resultado_recurso.pk}}</h4>
+            <h4 class="text-center">RESULTADO RECURSO</h4>
             <div class="d-grid gap-2">
-              <a href="{% url 'professor:resultado_recurso' pk=resultado_recurso.pk %}" class="btn btn-outline-primary" type="button">Clique Aqui</a>
+              {% if resultado_recurso != None %}
+                <a href="{% url 'professor:resultado_recurso' pk=resultado_recurso.pk %}" class="btn btn-outline-primary" type="button">Clique Aqui</a>
+              {% else %}
+                <a href="#" class="btn btn-outline-primary" type="button">Sem Recurso</a>
+              {% endif %}
             </div>
             <hr>
           </article>
